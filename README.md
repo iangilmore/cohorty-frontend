@@ -1,2 +1,2 @@
 # cohorty-frontend
-Where leading educators track student progress in their courses
+Where leading educators track student progress through their courses
