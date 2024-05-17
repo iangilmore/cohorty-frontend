@@ -8,16 +8,15 @@ import Login from './pages/Login/Login.jsx'
 import Student from './pages/Student/Student.jsx'
 
 
-// TODO: update routes
 function App() {
   return (
     <>
       <Routes>
-        {/* <Route path="/" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/courses" element={<Courses />} />
-        <Route path="/course/:id" element={<Course />} />
-        <Route path="/student/:id" element={<Student />} />
-        <Route path="/assignment/:id" element={<Assignment />} /> */}
+        <Route path="/:courseId/?tab=assignments" element={<Course />} />
+        <Route path="/:courseId/students/:studentId" element={<Student />} />
+        <Route path="/:courseId/students/:studentId/?tab=assignments" element={<Assignment />} />
       </Routes>
     </>
   )
