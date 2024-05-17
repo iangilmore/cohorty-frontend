@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import './index.css'
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme.js';
-import CssBaseline from '@mui/material/CssBaseline';
+// import CssBaseline from '@mui/material/CssBaseline';
 
 // Import Roboto font
 import '@fontsource/roboto/300.css';
