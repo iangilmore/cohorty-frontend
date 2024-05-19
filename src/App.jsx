@@ -6,14 +6,14 @@ import Course from './pages/Course/Course.jsx'
 import Courses from './pages/Courses/Courses.jsx'
 import Login from './pages/Login/Login.jsx'
 import Student from './pages/Student/Student.jsx'
-import NavBar from './components/NavBar/NavBar.jsx'
+import Navbar from './components/Navbar/Navbar.jsx'
 
 
 
 function App() {
   return (
     <>
-      <NavBar />
+      <Navbar />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/courses" element={<Courses />} />
