@@ -60,7 +60,7 @@ export default function StudentTable({ courseId }) {
                     {student.name}
                   </Button>
                 </TableCell>
-                <TableCell align="right">{student.assignmentPercentage}</TableCell>
+                <TableCell align="right">{student.assignment}</TableCell>
                 <TableCell align="right">{student.absences}</TableCell>
               </TableRow>
             ))}
