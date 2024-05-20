@@ -17,14 +17,14 @@ export default function StudentTable() {
   };
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" height="100vh" width="100%">
+    <Box display="flex" justifyContent="center" alignItems="center">
       <TableContainer component={Paper} sx={{ maxWidth: 650, mx: "auto" }}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Student</TableCell>
               <TableCell align="right" sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Assignment %</TableCell>
-              <TableCell align="right" sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Absenses</TableCell>
+              <TableCell align="right" sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Absences</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
