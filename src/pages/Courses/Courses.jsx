@@ -42,7 +42,10 @@ const Courses = () => {
         backgroundImage: 'url(https://images.pexels.com/photos/1438072/pexels-photo-1438072.jpeg)', // Update with your direct image URL
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        backgroundRepeat: 'no-repeat',
+        display: 'flex',
+        flexDirection: 'column', // Aligns children vertically
+        alignItems: 'center' // Centers children horizontally
       }}
     >
       <div className="course-page">
@@ -52,9 +55,18 @@ const Courses = () => {
               flexDirection: 'column',
               alignItems: 'center',
             }}>
+              <Box
+              sx={{
+              width: 'auto',
+              bgcolor: 'white',
+              p: 3,
+              borderRadius: 2,
+              }}
+              >
           <Typography component="h1" variant="h5">
             My Courses
           </Typography>
+          </Box>
           {courses.map((course) => (
             <CourseItem key={course.id} course={course} handleClick={handleClick}/>
           ))}

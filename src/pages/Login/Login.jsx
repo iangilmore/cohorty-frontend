@@ -21,21 +21,29 @@ export default function SignIn() {
     <Box
       sx={{
         width: '100%',
-        height: '100vh', // This will make sure the background covers the full view height
-        backgroundImage: 'url(https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg)', // Direct image URL
+        height: '100vh',
+        backgroundImage: 'url(https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        backgroundRepeat: 'no-repeat',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center', // Ensures the form is centered vertically
+        alignItems: 'center' // Ensures the form is centered horizontally
       }}
     >
+      <CssBaseline />
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
-            marginTop: 2, // Reduced from 8 to 2 to bring the form closer to the top of the page
+            bgcolor: 'white',
+            p: 3,
+            borderRadius: 4,
+            boxShadow: 3,
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
+            alignItems: 'center', // Centers everything inside this box
+            width: '100%', // Ensures the container fits to the maxWidth set by the Container
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -44,7 +52,7 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ width: '100%' }}>
             <TextField
               margin="normal"
               required

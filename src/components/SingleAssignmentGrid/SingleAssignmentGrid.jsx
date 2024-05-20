@@ -24,15 +24,15 @@ function SingleAssignmentGrid() {
 
     return (
         <Box sx={{ width: '100%', mt: 4, display: 'flex', justifyContent: 'center' }}>
-            <Box sx={{ maxWidth: 650, width: '100%' }}>
+            <Box sx={{ maxWidth: 800, width: '100%', bgcolor: 'background.paper', p: 2, boxShadow: 3, borderRadius: 2 }}>
                 <Typography variant="h5" sx={{ mb: 2, textAlign: 'center' }}>
                     JS Arrays Lab
                 </Typography>
-                <Typography variant="subtitle1" sx={{ mb: 2, textAlign: 'center' }}>
+                <Typography variant="subtitle1" sx={{ mb: 4, textAlign: 'center' }}>
                     due April 2, 2024
                 </Typography>
-                <TableContainer component={Paper}>
-                    <Table>
+                <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
+                    <Table sx={{ minWidth: 650 }}>
                         <TableHead>
                             <TableRow>
                                 <TableCell>Name</TableCell>
@@ -69,5 +69,3 @@ function SingleAssignmentGrid() {
 }
 
 export default SingleAssignmentGrid;
-
-
