@@ -1,20 +1,42 @@
+import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { getCourseStudents } from '../../services/students.js';
 
-export default function StudentTable() {
-  const rows = [
-    { name: 'Ian Gilmore', assignment: '100%', absences: 0 },
-    { name: 'Addy Jaime', assignment: '100%', absences: 0 },
-    { name: 'Joshua Pierre', assignment: '100%', absences: 0 },
-    { name: 'Elton John', assignment: '50%', absences: 2 },
-    { name: 'Abel Tesfaye', assignment: '75%', absences: 1.33 },
-    { name: 'Alexa Clark', assignment: '100%', absences: 0 }
-  ];
+export default function StudentTable({ courseId }) {
+  const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  // Function to handle click event on student name
-  const handleNameClick = (name) => {
-    console.log("Clicked on: ", name);
-    // Here you can define actions like opening a modal, displaying details, etc.
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        // const data = await getCourseStudents(courseId);
+        setStudents([
+          { id: 1, name: 'Ian Gilmore', assignment: '100%', absences: 0 },
+          { id: 2, name: 'Addy Jaime', assignment: '100%', absences: 0 },
+          { id: 3, name: 'Joshua Pierre', assignment: '100%', absences: 0 },
+          { id: 4, name: 'Elton John', assignment: '50%', absences: 2 },
+          { id: 5, name: 'Abel Tesfaye', assignment: '75%', absences: 1.33 },
+          { id: 6, name: 'Alexa Clark', assignment: '100%', absences: 0 }
+        ]);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStudents();
+  }, [courseId]);
+
+  const handleNameClick = (studentId) => {
+    navigate(`/${courseId}/students/${studentId}`);
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center">
@@ -28,19 +50,18 @@ export default function StudentTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.name}>
+            {students.map((student) => (
+              <TableRow key={student.id}>
                 <TableCell component="th" scope="row">
-                  {/* Wrap student name in a Button for clickable functionality */}
                   <Button
-                    onClick={() => handleNameClick(row.name)}
-                    sx={{ textTransform: 'none', justifyContent: 'flex-start', color: 'inherit', padding: 0, minWidth: 'auto' }} // Minimal button styling
+                    onClick={() => handleNameClick(student.id)}
+                    sx={{ textTransform: 'none', justifyContent: 'flex-start', color: 'inherit', padding: 0, minWidth: 'auto' }}
                   >
-                    {row.name}
+                    {student.name}
                   </Button>
                 </TableCell>
-                <TableCell align="right">{row.assignment}</TableCell>
-                <TableCell align="right">{row.absences}</TableCell>
+                <TableCell align="right">{student.assignmentPercentage}</TableCell>
+                <TableCell align="right">{student.absences}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -49,3 +70,4 @@ export default function StudentTable() {
     </Box>
   );
 }
+
