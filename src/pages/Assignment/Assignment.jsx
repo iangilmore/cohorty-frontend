@@ -11,7 +11,9 @@ export default function Assignment () {
         backgroundImage: 'url(https://images.pexels.com/photos/5324991/pexels-photo-5324991.jpeg)', // Direct image URL
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        backgroundRepeat: 'no-repeat',
+        display: 'flex',
+            flexDirection: 'column',
       }}
     >
 <SingleAssignmentGrid />
