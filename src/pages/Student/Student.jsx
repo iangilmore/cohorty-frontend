@@ -11,7 +11,16 @@ export default function Student() {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box
+      sx={{
+        width: '100%',
+        height: '100vh', // This will make sure the background covers the full view height
+        backgroundImage: 'url(https://images.pexels.com/photos/7438102/pexels-photo-7438102.jpeg)', // Direct image URL
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
       <Typography variant="h4" sx={{ my: 2, textAlign: 'center' }}>
         Ian Gilmore
       </Typography>

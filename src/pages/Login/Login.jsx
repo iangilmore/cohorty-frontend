@@ -7,7 +7,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
-
 export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -19,11 +18,21 @@ export default function SignIn() {
   };
 
   return (
+    <Box
+      sx={{
+        width: '100%',
+        height: '100vh', // This will make sure the background covers the full view height
+        backgroundImage: 'url(https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg)', // Direct image URL
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 2, // Reduced from 8 to 2 to bring the form closer to the top of the page
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -67,5 +76,6 @@ export default function SignIn() {
           </Box>
         </Box>
       </Container>
+    </Box>
   );
 }
