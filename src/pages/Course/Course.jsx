@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { Typography, Box, Tabs, Tab } from '@mui/material';
+import StudentTable from '../../components/StudentsOverviewGrid/StudentsOverviewGrid.jsx';
+import AssignmentsGrid from '../../components/AssignmentsGrid/AssignmentsGrid.jsx';
 
 const a11yProps = (index) => {
   return {
@@ -57,10 +59,10 @@ const Course = () => {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          Assignments Tab
+          <AssignmentsGrid />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          Item Two
+          <StudentTable />
         </CustomTabPanel>
       </Box>
     </div>
