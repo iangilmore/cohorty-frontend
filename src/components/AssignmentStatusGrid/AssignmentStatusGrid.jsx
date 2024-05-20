@@ -7,7 +7,6 @@ import {
   TableHead,
   TableRow,
   Checkbox,
-  Typography,
   Paper
 } from '@mui/material';
 
@@ -33,9 +32,6 @@ function AssignmentStatusGrid() {
 
   return (
     <TableContainer component={Paper} sx={{ maxWidth: 650, margin: 'auto', mt: 4 }}>
-      <Typography variant="h4" sx={{ my: 2, textAlign: 'center' }}>
-        Ian Gilmore
-      </Typography>
       <Table aria-label="assignment status">
         <TableHead>
           <TableRow>
