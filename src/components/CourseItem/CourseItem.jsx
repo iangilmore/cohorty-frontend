@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent';
 const CourseItem = ({ course, handleClick }) => {
   return (
     <Card 
-    onClick={() => handleClick(course.id)}
+    onClick={() => handleClick(course.id, course.name)}
     sx={{
       height: 100,
       minWidth: 275,
