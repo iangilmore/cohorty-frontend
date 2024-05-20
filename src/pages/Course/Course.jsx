@@ -42,9 +42,19 @@ const Course = () => {
   };
 
   return (
+    <Box
+    sx={{
+      width: '100%',
+      height: '100vh', // This will make sure the background covers the full view height
+      backgroundImage: 'url(https://images.pexels.com/photos/7092515/pexels-photo-7092515.jpeg)', // Update with your direct image URL
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat'
+    }}
+  >
     <div>
       <Box sx={{
-        marginTop: 8,
+        marginTop: 2,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -66,6 +76,7 @@ const Course = () => {
         </CustomTabPanel>
       </Box>
     </div>
+    </Box>
   );
 };
 
