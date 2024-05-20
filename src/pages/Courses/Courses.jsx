@@ -3,8 +3,16 @@ import { getCourses } from '../../services/courses.js';
 import CourseItem from '../../components/CourseItem/CourseItem.jsx';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { useNavigate } from 'react-router-dom';
 
 const Courses = () => {
+
+  const navigate = useNavigate();
+
+  const handleClick = (courseId, courseName) => {
+    navigate(`/${courseId}?tab=assignments`, { state: { courseName } });
+  };
+
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -56,7 +64,7 @@ const Courses = () => {
           My Courses
         </Typography>
         {courses.map((course) => (
-          <CourseItem key={course.id} course={course} />
+          <CourseItem key={course.id} course={course} handleClick={handleClick}/>
         ))}
       </Box>
     </div>
