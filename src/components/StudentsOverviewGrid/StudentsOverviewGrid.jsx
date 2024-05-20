@@ -14,12 +14,12 @@ export default function StudentTable({ courseId }) {
       try {
         // const data = await getCourseStudents(courseId);
         setStudents([
-          { id: 1, name: 'Ian Gilmore', assignment: '100%', absences: 0 },
-          { id: 2, name: 'Addy Jaime', assignment: '100%', absences: 0 },
-          { id: 3, name: 'Joshua Pierre', assignment: '100%', absences: 0 },
-          { id: 4, name: 'Elton John', assignment: '50%', absences: 2 },
-          { id: 5, name: 'Abel Tesfaye', assignment: '75%', absences: 1.33 },
-          { id: 6, name: 'Alexa Clark', assignment: '100%', absences: 0 }
+          { id: 1, name: 'Ian Gilmore', assignment_percentage: '100%', absences: 0 },
+          { id: 2, name: 'Addy Jaime', assignment_percentage: '100%', absences: 0 },
+          { id: 3, name: 'Joshua Pierre', assignment_percentage: '100%', absences: 0 },
+          { id: 4, name: 'Elton John', assignment_percentage: '50%', absences: 2 },
+          { id: 5, name: 'Abel Tesfaye', assignment_percentage: '75%', absences: 1.33 },
+          { id: 6, name: 'Alexa Clark', assignment_percentage: '100%', absences: 0 }
         ]);
       } catch (error) {
         setError(error.message);
@@ -60,7 +60,7 @@ export default function StudentTable({ courseId }) {
                     {student.name}
                   </Button>
                 </TableCell>
-                <TableCell align="right">{student.assignment}</TableCell>
+                <TableCell align="right">{student.assignment_percentage}</TableCell>
                 <TableCell align="right">{student.absences}</TableCell>
               </TableRow>
             ))}
