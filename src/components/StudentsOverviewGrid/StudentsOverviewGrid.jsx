@@ -45,7 +45,7 @@ export default function StudentTable({ courseId }) {
           <TableHead>
             <TableRow>
               <TableCell sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Student</TableCell>
-              <TableCell align="right" sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Assignment %</TableCell>
+              <TableCell align="right" sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Assignment Completion</TableCell>
               <TableCell align="right" sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Absences</TableCell>
             </TableRow>
           </TableHead>
