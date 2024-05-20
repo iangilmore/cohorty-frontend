@@ -30,6 +30,7 @@ const CustomTabPanel = ({ children, value, index, ...other }) => {
 };
 
 const Course = () => {
+  const { courseId } = useParams()
   const location = useLocation();
   const courseName = location.state?.courseName;
   const queryParams = new URLSearchParams(location.search);
@@ -59,7 +60,7 @@ const Course = () => {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          <AssignmentsGrid />
+          <AssignmentsGrid courseId={courseId} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <StudentTable />
