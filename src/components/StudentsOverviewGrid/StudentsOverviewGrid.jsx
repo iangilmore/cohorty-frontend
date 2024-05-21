@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { getCourseStudents } from '../../services/students.js';
 import { getCourse } from '../../services/courses.js'
 
 export default function StudentTable({ courseId }) {
@@ -13,9 +12,15 @@ export default function StudentTable({ courseId }) {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        //TODO: ensure that fetched data from getcourse shows like below
+        //TODO: uncomment out the below
         // const data = await getCourse(courseId);
-
+        // const formattedStudents = data.students.map(student => ({
+        //   id: student.id,
+        //   name: student.name,
+        //   assignment_percentage: `${student.assignment_percentage}%`,
+        //   absences: student.absences
+        // }));
+        // setStudents(formattedStudents);
         setStudents([
           { id: 1, name: 'Ian Gilmore', assignment_percentage: '100%', absences: 0 },
           { id: 2, name: 'Addy Jaime', assignment_percentage: '100%', absences: 0 },
