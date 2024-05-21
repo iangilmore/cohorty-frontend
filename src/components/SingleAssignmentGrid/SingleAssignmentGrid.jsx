@@ -15,7 +15,18 @@ function SingleAssignmentGrid() {
     const handleCheckboxChange = (id, field) => {
         const newStudents = students.map(student => {
             if (student.id === id) {
-                return { ...student, [field]: !student[field] };
+                if (field === 'complete') {
+                    // If marking complete, also mark submitted
+                    return { ...student, submitted: true, complete: !student.complete };
+                } else if (field === 'submitted') {
+                    // Prevent unchecking submitted if complete is checked
+                    if (student.complete) {
+                        return student; // Ignore changes to submitted if complete is true
+                    } else {
+                        // Toggle submitted only if complete is not checked
+                        return { ...student, submitted: !student.submitted };
+                    }
+                }
             }
             return student;
         });
@@ -49,6 +60,7 @@ function SingleAssignmentGrid() {
                                             checked={student.submitted} 
                                             onChange={() => handleCheckboxChange(student.id, 'submitted')}
                                             color="primary" 
+                                            disabled={student.complete} // Disable if complete is checked
                                         />
                                     </TableCell>
                                     <TableCell align="center">
