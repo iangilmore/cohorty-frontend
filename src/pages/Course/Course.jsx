@@ -1,15 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import { Typography, Box, Tabs, Tab, Paper, Button } from '@mui/material';
+import { Typography, Box, Paper } from '@mui/material';
 import StudentTable from '../../components/StudentsOverviewGrid/StudentsOverviewGrid.jsx';
 import AssignmentsGrid from '../../components/AssignmentsGrid/AssignmentsGrid.jsx';
-
-const a11yProps = (index) => {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-};
 
 const CustomTabPanel = ({ children, value, index, ...other }) => {
   return (
@@ -29,18 +22,12 @@ const CustomTabPanel = ({ children, value, index, ...other }) => {
   );
 };
 
-const Course = () => {
+const Course = ({ activeTab }) => {
   const { courseId } = useParams();
   const location = useLocation();
   const courseName = location.state?.courseName;
-  const queryParams = new URLSearchParams(location.search);
-  const tab = queryParams.get('tab');
 
-  const [value, setValue] = useState(tab === 'assignments' ? 0 : 1);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const tabValue = activeTab === 'assignments' ? 0 : 1;
 
   return (
     <Box
@@ -72,15 +59,15 @@ const Course = () => {
           {courseName}
         </Typography>
         <Box sx={{ width: '100%', borderBottom: 1, borderColor: 'divider', mb: 2 }}>
-          <Tabs value={value} onChange={handleChange} centered>
-            <Tab label="Assignments" {...a11yProps(0)} />
-            <Tab label="Students" {...a11yProps(1)} />
-          </Tabs>
+          {/* <Tabs value={tabValue} centered>
+            <Tab label="Assignments" />
+            <Tab label="Students" />
+          </Tabs> */}
         </Box>
-        <CustomTabPanel value={value} index={0}>
+        <CustomTabPanel value={tabValue} index={0}>
           <AssignmentsGrid courseId={courseId} />
         </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
+        <CustomTabPanel value={tabValue} index={1}>
           <StudentTable />
         </CustomTabPanel>
       </Paper>
