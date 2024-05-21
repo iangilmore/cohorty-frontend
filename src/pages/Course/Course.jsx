@@ -77,13 +77,6 @@ const Course = () => {
             <Tab label="Students" {...a11yProps(1)} />
           </Tabs>
         </Box>
-        <Button 
-          variant="contained" 
-          color="primary" 
-          sx={{ mt: 2, alignSelf: 'center' }} // Positioned to align centrally below the tabs
-        >
-          Add Assignment
-        </Button>
         <CustomTabPanel value={value} index={0}>
           <AssignmentsGrid courseId={courseId} />
         </CustomTabPanel>
