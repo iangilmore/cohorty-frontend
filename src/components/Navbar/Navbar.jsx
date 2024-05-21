@@ -24,6 +24,8 @@ export default function NavBar({ onTabChange, courseName }) {
       justifyContent="space-between"
       alignItems="center" 
       width="100%"
+      p={1}
+      boxSizing='border-box'
       boxShadow={3}
       bgcolor="background.paper"
     >
