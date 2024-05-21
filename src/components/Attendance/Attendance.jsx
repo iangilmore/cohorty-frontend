@@ -1,18 +1,111 @@
-import { Typography, IconButton, Grid, Container, Box } from '@mui/material';
+import React, { useState } from 'react';
+import { Typography, IconButton, Grid, Container, Box, Modal, TextField, Button, List, ListItem, ListItemText, ListItemSecondaryAction } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+function DateItem({ date, onDelete, onEdit }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editDate, setEditDate] = useState(date);
+
+  const handleEdit = () => {
+    if (isEditing) {
+      onEdit(editDate);
+    }
+    setIsEditing(!isEditing);
+  };
+
+  const handleDelete = () => {
+    onDelete();
+  };
+
+  return (
+    <ListItem>
+      {isEditing ? (
+        <TextField
+          value={editDate}
+          onChange={(e) => setEditDate(e.target.value)}
+          type="date"
+          sx={{ mr: 1 }}
+        />
+      ) : (
+        <ListItemText primary={date} />
+      )}
+      <ListItemSecondaryAction>
+        <IconButton edge="end" aria-label="edit" onClick={handleEdit}>
+          {isEditing ? <Typography>Save</Typography> : <EditIcon />}
+        </IconButton>
+        <IconButton edge="end" aria-label="delete" onClick={handleDelete}>
+          <DeleteIcon />
+        </IconButton>
+      </ListItemSecondaryAction>
+    </ListItem>
+  );
+}
 
 function Attendance() {
+  const [open, setOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [newDate, setNewDate] = useState("");
+  const [absences, setAbsences] = useState(["2023-04-03"]);
+  const [tardies, setTardies] = useState(["2023-04-22"]);
+
+  const handleOpen = (title) => {
+    setOpen(true);
+    setModalTitle(title);
+    setNewDate(""); // Reset the date input when opening the modal
+  };
+
+  const handleClose = () => setOpen(false);
+
+  const handleAddDate = () => {
+    if (modalTitle === "Add New Absence") {
+      setAbsences([...absences, newDate]);
+    } else {
+      setTardies([...tardies, newDate]);
+    }
+    handleClose();
+  };
+
+  const handleChangeDate = (event) => {
+    setNewDate(event.target.value);
+  };
+
+  const handleDelete = (type, index) => {
+    const updateList = type === "absences" ? [...absences] : [...tardies];
+    updateList.splice(index, 1);
+    type === "absences" ? setAbsences(updateList) : setTardies(updateList);
+  };
+
+  const handleEdit = (type, index, date) => {
+    const updateList = type === "absences" ? [...absences] : [...tardies];
+    updateList[index] = date;
+    type === "absences" ? setAbsences(updateList) : setTardies(updateList);
+  };
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+    borderRadius: 2,
+  };
+
   return (
     <Container maxWidth="sm" sx={{ mt: 2, mb: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <Box sx={{
-        bgcolor: 'white', // Set the background color to white for better readability
-        width: '100%', // Takes the full width of the container
-        p: 2, // Padding inside the box for spacing
-        boxShadow: 3, // Adds a shadow for depth, can be adjusted or removed as needed
-        borderRadius: '4px', // Optional: rounds the corners
+        bgcolor: 'white',
+        width: '100%',
+        p: 2,
+        boxShadow: 3,
+        borderRadius: '4px',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center', // Center content
+        alignItems: 'center',
       }}>
         <Typography variant="h6" sx={{ textAlign: 'center', mb: 2 }}>
           Attendance
@@ -22,25 +115,63 @@ function Attendance() {
             <Typography variant="h6" gutterBottom align="center">
               Absences
             </Typography>
-            <Grid container direction="column" alignItems="center" spacing={1}>
-              <Typography>April 3</Typography>
-              <IconButton color="primary" size="large">
-                <AddCircleOutlineIcon />
-              </IconButton>
-            </Grid>
+            <List>
+              {absences.map((date, index) => (
+                <DateItem key={index} date={date} onDelete={() => handleDelete('absences', index)} onEdit={(newDate) => handleEdit('absences', index, newDate)} />
+              ))}
+            </List>
+            <IconButton color="primary" size="large" onClick={() => handleOpen("Add New Absence")}>
+              <AddCircleOutlineIcon />
+            </IconButton>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant="h6" gutterBottom align="center">
               Tardies
             </Typography>
-            <Grid container direction="column" alignItems="center" spacing={1}>
-              <Typography>April 22</Typography>
-              <IconButton color="primary" size="large">
-                <AddCircleOutlineIcon />
-              </IconButton>
-            </Grid>
+            <List>
+              {tardies.map((date, index) => (
+                <DateItem key={index} date={date} onDelete={() => handleDelete('tardies', index)} onEdit={(newDate) => handleEdit('tardies', index, newDate)} />
+              ))}
+            </List>
+            <IconButton color="primary" size="large" onClick={() => handleOpen("Add New Tardy")}>
+              <AddCircleOutlineIcon />
+            </IconButton>
           </Grid>
         </Grid>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              {modalTitle}
+            </Typography>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="date"
+              label="Date"
+              type="date"
+              value={newDate}
+              onChange={handleChangeDate}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              sx={{ mt: 2 }}
+            />
+            <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
+              <Button variant="contained" onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button variant="contained" onClick={handleAddDate} color="primary">
+                Add
+              </Button>
+            </Box>
+          </Box>
+        </Modal>
       </Box>
     </Container>
   );
