@@ -84,9 +84,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Checkbox, Typography, Box } from '@mui/material';
-import { getCourse } from '../../services/courses.js';
-import { getAssignmentDetails, updateAssignmentDetails } from '../../services/assignments.js';
 import { useNavigate } from 'react-router-dom';
+// Mock services imports
+// import { getCourse } from '../../services/courses.js';
+// import { getAssignmentDetails, updateAssignmentDetails } from '../../services/assignments.js';
 
 export default function SingleAssignmentGrid({ courseId, assignmentId }) {
     const [students, setStudents] = useState([]);
@@ -95,24 +96,53 @@ export default function SingleAssignmentGrid({ courseId, assignmentId }) {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
+    const assignmentData = {
+        id: 1,
+        name: 'JavaScript Arrays Lab',
+        due_date: '2024-03-11',
+        submissions: [
+            { id: 1, student: 'Ian Gilmore', is_complete: true }
+        ]
+    };
+
     useEffect(() => {
         const fetchStudentsAndAssignments = async () => {
             try {
-                const courseData = await getCourse(courseId);
-                const assignmentData = await getAssignmentDetails(assignmentId);
+                // Mocking the API calls with hardcoded data
+                // const courseData = await getCourse(courseId);
+                // const assignmentData = await getAssignmentDetails(assignmentId);
 
-                const formattedAssignments = courseData.students.map(student => {
-                    const submission = assignmentData.submissions.find(sub => sub.student === student.name) || {};
-                    return {
-                        id: student.id,
-                        name: student.name,
-                        submitted: !!submission.id,
-                        complete: submission.is_complete || false
-                    };
-                });
+                // const formattedAssignments = courseData.students.map(student => {
+                //     const submission = assignmentData.submissions.find(sub => sub.student === student.name) || {};
+                //     return {
+                //         id: student.id,
+                //         name: student.name,
+                //         submitted: !!submission.id,
+                //         complete: submission.is_complete || false
+                //     };
+                // });
 
-                setStudents(courseData.students);
-                setAssignments(formattedAssignments);
+                // Mock data for students and assignments
+                setStudents([
+                    { id: 1, name: 'Ian Gilmore', assignment_percentage: '100%', absences: 0 },
+                    { id: 2, name: 'Addy Jaime', assignment_percentage: '100%', absences: 0 },
+                    { id: 3, name: 'Joshua Pierre', assignment_percentage: '100%', absences: 0 },
+                    { id: 4, name: 'Elton John', assignment_percentage: '50%', absences: 2 },
+                    { id: 5, name: 'Abel Tesfaye', assignment_percentage: '75%', absences: 1.33 },
+                    { id: 6, name: 'Alexa Clark', assignment_percentage: '100%', absences: 0 }
+                ]);
+
+                setAssignments([
+                    { id: 1, name: 'Ian Gilmore', submitted: true, complete: true },
+                    { id: 2, name: 'Addy Jaime', submitted: false, complete: true },
+                    { id: 3, name: 'Joshua Pierre', submitted: true, complete: true },
+                    { id: 4, name: 'Elton John', submitted: false, complete: false },
+                    { id: 5, name: 'Abel Tesfaye', submitted: true, complete: false },
+                    { id: 6, name: 'Alexa Clark', submitted: true, complete: true },
+                ]);
+
+                // setStudents(courseData.students);
+                // setAssignments(formattedAssignments);
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -123,7 +153,6 @@ export default function SingleAssignmentGrid({ courseId, assignmentId }) {
         fetchStudentsAndAssignments();
     }, [courseId, assignmentId]);
 
-    // Handle checkbox change: update local state based on user interaction
     const handleCheckboxChange = (id, field) => {
         const newAssignments = assignments.map((assignment) => {
             if (assignment.id === id) {
@@ -131,7 +160,7 @@ export default function SingleAssignmentGrid({ courseId, assignmentId }) {
                     return { ...assignment, submitted: true, complete: !assignment.complete };
                 } else if (field === 'submitted') {
                     if (assignment.complete) {
-                        return assignment; // Ignore changes to submitted if complete is true
+                        return assignment;
                     } else {
                         return { ...assignment, submitted: !assignment.submitted };
                     }
@@ -142,7 +171,6 @@ export default function SingleAssignmentGrid({ courseId, assignmentId }) {
         setAssignments(newAssignments);
     };
 
-    // Handle navigation away: update assignment details on server
     const handleNavigateAway = async () => {
         try {
             await Promise.all(
@@ -157,7 +185,6 @@ export default function SingleAssignmentGrid({ courseId, assignmentId }) {
         }
     };
 
-    // Ensure updates are sent when user navigates away from the page
     useEffect(() => {
         const handleBeforeUnload = (event) => {
             event.preventDefault();
@@ -201,7 +228,7 @@ export default function SingleAssignmentGrid({ courseId, assignmentId }) {
                                             checked={assignment.submitted}
                                             onChange={() => handleCheckboxChange(assignment.id, 'submitted')}
                                             color="primary"
-                                            disabled={assignment.complete} // Disable if complete is checked
+                                            disabled={assignment.complete}
                                         />
                                     </TableCell>
                                     <TableCell align="center">
