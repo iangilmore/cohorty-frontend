@@ -55,7 +55,7 @@ const Courses = () => {
               flexDirection: 'column',
               alignItems: 'center',
             }}>
-              <Box
+              {/* <Box
               sx={{
               width: 'auto',
               bgcolor: 'white',
@@ -66,7 +66,7 @@ const Courses = () => {
           <Typography component="h1" variant="h5">
             My Courses
           </Typography>
-          </Box>
+          </Box> */}
           {courses.map((course) => (
             <CourseItem key={course.id} course={course} handleClick={handleClick}/>
           ))}
