@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { getCourseAssignments, addAssignmentToCourse } from '../../services/assignments.js'; 
+import { getCourse } from '../../services/courses.js'; 
 
 export default function AssignmentsGrid({ courseId }) {
   const [assignments, setAssignments] = useState([]);
@@ -14,8 +14,15 @@ export default function AssignmentsGrid({ courseId }) {
   useEffect(() => {
     const fetchAssignments = async () => {
       try {
-        // const data = await getCourseAssignments(courseId);
-        // TODO: Change this line to set the assignments based on the data from the API i.e. setAssignments(data) and uncomment out the above
+        // TODO: uncomment below two lines when ready and remove the hardcoded array
+        // const data = await getCourse(courseId);
+        // const formattedAssignments = data.assignments.map(assignment => ({
+        //   id: assignment.id,
+        //   name: assignment.name,
+        //   dueDate: new Date(assignment.due_date).toLocaleDateString()
+        // }));
+        // TODO: uncomment below when ready and remove the hardcoded array
+        // setAssignments(formattedAssignments);
         setAssignments([{ id: 1, name: 'JS Arrays Lab', dueDate: 'April 2' },
         { id: 2, name: 'JS Function Lab', dueDate: 'April 5' },
         { id: 3, name: 'JS Objects Lab', dueDate: 'April 8' },
