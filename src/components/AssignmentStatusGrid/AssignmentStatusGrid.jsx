@@ -23,7 +23,18 @@ function AssignmentStatusGrid() {
   const handleCheckboxChange = (id, field) => {
     const newAssignments = assignments.map((assignment) => {
       if (assignment.id === id) {
-        return { ...assignment, [field]: !assignment[field] };
+        if (field === 'complete') {
+          // If marking complete, also mark submitted
+          return { ...assignment, submitted: true, complete: !assignment.complete };
+        } else if (field === 'submitted') {
+          // Prevent unchecking submitted if complete is checked
+          if (assignment.complete) {
+            return assignment; // Ignore changes to submitted if complete is true
+          } else {
+            // Toggle submitted only if complete is not checked
+            return { ...assignment, submitted: !assignment.submitted };
+          }
+        }
       }
       return assignment;
     });
@@ -49,6 +60,8 @@ function AssignmentStatusGrid() {
                   checked={assignment.submitted}
                   onChange={() => handleCheckboxChange(assignment.id, 'submitted')}
                   color="primary"
+                  // Disable the checkbox interaction if complete is true
+                  disabled={assignment.complete}
                 />
               </TableCell>
               <TableCell align="center">
