@@ -1,55 +1,55 @@
 import React, { useState } from 'react';
 import { Typography, IconButton, Grid, Container, Box, Modal, TextField, Button, List, ListItem, ListItemText, ListItemSecondaryAction } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-function DateItem({ date, onDelete, onEdit }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editDate, setEditDate] = useState(date);
-
-  const handleEdit = () => {
-    if (isEditing) {
-      onEdit(editDate);
-    }
-    setIsEditing(!isEditing);
-  };
+function DateItem({ date, onDelete }) {
+  const [showActions, setShowActions] = useState(false);  // State to control visibility of actions
 
   const handleDelete = () => {
     onDelete();
   };
 
+  const toggleActions = () => {
+    setShowActions(!showActions);  // Toggle visibility of actions
+  };
+
   return (
-    <ListItem>
-      {isEditing ? (
-        <TextField
-          value={editDate}
-          onChange={(e) => setEditDate(e.target.value)}
-          type="date"
-          sx={{ mr: 1 }}
-        />
-      ) : (
-        <ListItemText primary={date} />
+    <ListItem onClick={toggleActions} style={{ cursor: 'pointer' }}>
+      <ListItemText primary={date} />
+      {showActions && (
+        <ListItemSecondaryAction>
+          <IconButton edge="end" aria-label="delete" onClick={handleDelete}>
+            <DeleteIcon />
+          </IconButton>
+        </ListItemSecondaryAction>
       )}
-      <ListItemSecondaryAction>
-        <IconButton edge="end" aria-label="edit" onClick={handleEdit}>
-          {isEditing ? <Typography>Save</Typography> : <EditIcon />}
-        </IconButton>
-        <IconButton edge="end" aria-label="delete" onClick={handleDelete}>
-          <DeleteIcon />
-        </IconButton>
-      </ListItemSecondaryAction>
     </ListItem>
   );
 }
+
+const monthNames = ["January", "February", "March", "April", "May", "June",
+"July", "August", "September", "October", "November", "December"
+];
+
+const formatDateForDisplay = (isoDateString) => {
+  const date = new Date(isoDateString + 'T00:00:00'); // Force the date to be at midnight local time
+  const monthName = monthNames[date.getMonth()];
+  const day = date.getDate();
+  return `${monthName} ${day}`;
+};
+
+const sortDates = (dates) => {
+  return dates.sort((a, b) => new Date(a) - new Date(b));
+};
 
 function Attendance() {
   const [open, setOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [newDate, setNewDate] = useState("");
-  const [absences, setAbsences] = useState(["2023-04-03"]);
-  const [tardies, setTardies] = useState(["2023-04-22"]);
-
+  const [absences, setAbsences] = useState([]);
+  const [tardies, setTardies] = useState([]);
+  
   const handleOpen = (title) => {
     setOpen(true);
     setModalTitle(title);
@@ -59,10 +59,13 @@ function Attendance() {
   const handleClose = () => setOpen(false);
 
   const handleAddDate = () => {
+    const formattedDate = formatDateForDisplay(newDate);
     if (modalTitle === "Add New Absence") {
-      setAbsences([...absences, newDate]);
+      const updatedAbsences = [...absences, formattedDate];
+      setAbsences(sortDates(updatedAbsences));
     } else {
-      setTardies([...tardies, newDate]);
+      const updatedTardies = [...tardies, formattedDate];
+      setTardies(sortDates(updatedTardies));
     }
     handleClose();
   };
@@ -74,12 +77,6 @@ function Attendance() {
   const handleDelete = (type, index) => {
     const updateList = type === "absences" ? [...absences] : [...tardies];
     updateList.splice(index, 1);
-    type === "absences" ? setAbsences(updateList) : setTardies(updateList);
-  };
-
-  const handleEdit = (type, index, date) => {
-    const updateList = type === "absences" ? [...absences] : [...tardies];
-    updateList[index] = date;
     type === "absences" ? setAbsences(updateList) : setTardies(updateList);
   };
 
@@ -117,7 +114,7 @@ function Attendance() {
             </Typography>
             <List>
               {absences.map((date, index) => (
-                <DateItem key={index} date={date} onDelete={() => handleDelete('absences', index)} onEdit={(newDate) => handleEdit('absences', index, newDate)} />
+                <DateItem key={index} date={date} onDelete={() => handleDelete('absences', index)} />
               ))}
             </List>
             <IconButton color="primary" size="large" onClick={() => handleOpen("Add New Absence")}>
@@ -130,7 +127,7 @@ function Attendance() {
             </Typography>
             <List>
               {tardies.map((date, index) => (
-                <DateItem key={index} date={date} onDelete={() => handleDelete('tardies', index)} onEdit={(newDate) => handleEdit('tardies', index, newDate)} />
+                <DateItem key={index} date={date} onDelete={() => handleDelete('tardies', index)} />
               ))}
             </List>
             <IconButton color="primary" size="large" onClick={() => handleOpen("Add New Tardy")}>
