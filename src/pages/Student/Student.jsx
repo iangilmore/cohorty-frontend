@@ -20,19 +20,22 @@ export default function Student() {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         display: 'flex',
-        flexDirection: 'column', // Aligns children vertically
-        alignItems: 'center' // Centers children horizontally
+        justifyContent: 'center', // Centers children horizontally
+        alignItems: 'center' // Centers children vertically
       }}
     >
       <Box
         sx={{
-          width: 'auto', // Only as wide as its contents
+          width: '90%',
+          maxWidth: 800,
           bgcolor: 'white', // Set the background color to white for better readability
-          mt: 2, // Margin top for spacing from the top or navbar
-          mb: 1, // Margin bottom before the content component
           p: 2, // Padding inside the box
           boxShadow: 3, // Adds a shadow for depth, can be adjusted or removed as needed
           borderRadius: '4px', // Optional: rounds the corners
+          display: 'flex',
+          flexDirection: 'column', // Aligns children vertically
+          alignItems: 'center', // Centers children horizontally
+          minHeight: '60vh', // Ensures a minimum height for the box
         }}
       >
         <Typography variant="h4" sx={{ textAlign: 'center', mb: 2 }}>
@@ -42,9 +45,11 @@ export default function Student() {
           <Tab label="Assignments" value="assignments" />
           <Tab label="Attendance" value="attendance" />
         </Tabs>
+        <Box sx={{ mt: 2, width: '100%', height: '100%' }}>
+          {selectedTab === 'assignments' && <AssignmentStatusGrid />}
+          {selectedTab === 'attendance' && <Attendance />}
+        </Box>
       </Box>
-      {selectedTab === 'assignments' && <AssignmentStatusGrid />}
-      {selectedTab === 'attendance' && <Attendance />}
     </Box>
   );
 }

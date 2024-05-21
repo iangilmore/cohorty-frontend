@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Typography, IconButton, Grid, Container, Box, Modal, TextField, Button, List, ListItem, ListItemText, ListItemSecondaryAction } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -15,7 +15,7 @@ function DateItem({ date, onDelete }) {
   };
 
   return (
-    <ListItem onClick={toggleActions} style={{ cursor: 'pointer' }}>
+    <ListItem onClick={toggleActions} style={{ cursor: 'pointer', textAlign: 'center' }}>
       <ListItemText primary={date} />
       {showActions && (
         <ListItemSecondaryAction>
@@ -95,7 +95,7 @@ function Attendance() {
   return (
     <Container maxWidth="sm" sx={{ mt: 2, mb: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <Box sx={{
-        bgcolor: 'white',
+        bgcolor: 'pink',
         width: '100%',
         p: 2,
         boxShadow: 3,
@@ -104,9 +104,9 @@ function Attendance() {
         flexDirection: 'column',
         alignItems: 'center',
       }}>
-        <Typography variant="h6" sx={{ textAlign: 'center', mb: 2 }}>
+        {/* <Typography variant="h6" sx={{ textAlign: 'center', mb: 2 }}>
           Attendance
-        </Typography>
+        </Typography> */}
         <Grid container spacing={2} sx={{ width: '100%', justifyContent: 'center' }}>
           <Grid item xs={12} sm={6}>
             <Typography variant="h6" gutterBottom align="center">
@@ -117,9 +117,11 @@ function Attendance() {
                 <DateItem key={index} date={date} onDelete={() => handleDelete('absences', index)} />
               ))}
             </List>
-            <IconButton color="primary" size="large" onClick={() => handleOpen("Add New Absence")}>
-              <AddCircleOutlineIcon />
-            </IconButton>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <IconButton color="primary" size="large" onClick={() => handleOpen("Add New Absence")}>
+                <AddCircleOutlineIcon />
+              </IconButton>
+            </Box>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant="h6" gutterBottom align="center">
@@ -130,9 +132,11 @@ function Attendance() {
                 <DateItem key={index} date={date} onDelete={() => handleDelete('tardies', index)} />
               ))}
             </List>
-            <IconButton color="primary" size="large" onClick={() => handleOpen("Add New Tardy")}>
-              <AddCircleOutlineIcon />
-            </IconButton>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <IconButton color="primary" size="large" onClick={() => handleOpen("Add New Tardy")}>
+                <AddCircleOutlineIcon />
+              </IconButton>
+            </Box>
           </Grid>
         </Grid>
         <Modal

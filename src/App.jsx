@@ -17,7 +17,7 @@ function App() {
   };
 
   // Extract course name from the route state, if available
-  const courseName = location.state?.courseName || 'SEB 0304'; // Default course name
+  const courseName = location.state?.courseName || 'Cohort'; // Default course name
 
   return (
     <>
