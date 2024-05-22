@@ -3,11 +3,13 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import Logo from "../../assets/cohortyLogo.png";
 import { logIn } from '../../services/users'; // Assuming logIn is the correct function
 
-export default function Login() {
+export default function LogIn() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -27,12 +29,6 @@ export default function Login() {
   };
 
   const handleSubmit = async (event) => {
-import Logo from "../../assets/cohortyLogo.png"
-
-
-
-export default function LogIn() {
-  const handleSubmit = (event) => {
     event.preventDefault();
 
     try {
@@ -91,8 +87,7 @@ export default function LogIn() {
             width: '100%', // Ensures the container fits to the maxWidth set by the Container
           }}
         >
-          
-          <img src={Logo} alt="Logo" style={{ width: '300px', height: 'auto' }}  />
+          <img src={Logo} alt="Logo" style={{ width: '300px', height: 'auto' }} />
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ width: '100%' }}>
             <TextField
               margin="normal"
