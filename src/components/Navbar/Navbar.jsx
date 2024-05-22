@@ -23,6 +23,8 @@ export default function Navbar({ onTabChange, courseName }) {
     // Add your logout logic here
   };
 
+  const showTabs = location.pathname !== '/courses';
+
   return (
     <Box 
       display="flex"
@@ -43,22 +45,24 @@ export default function Navbar({ onTabChange, courseName }) {
         </Button>
       </Box>
 
-      <Box display="flex" gap={2} justifyContent="center" flexGrow={1}> 
-        <Button 
-          variant="text" 
-          sx={{ fontWeight: activeTabState === 'students' ? 'bold' : 'normal' }}
-          onClick={() => handleTabChange('students')}
-        >
-          Students
-        </Button>
-        <Button 
-          variant="text" 
-          sx={{ fontWeight: activeTabState === 'assignments' ? 'bold' : 'normal' }}
-          onClick={() => handleTabChange('assignments')}
-        >
-          Assignments
-        </Button>
-      </Box>
+      {showTabs && (
+        <Box display="flex" gap={2} justifyContent="center" flexGrow={1}> 
+          <Button 
+            variant="text" 
+            sx={{ fontWeight: activeTabState === 'students' ? 'bold' : 'normal' }}
+            onClick={() => handleTabChange('students')}
+          >
+            Students
+          </Button>
+          <Button 
+            variant="text" 
+            sx={{ fontWeight: activeTabState === 'assignments' ? 'bold' : 'normal' }}
+            onClick={() => handleTabChange('assignments')}
+          >
+            Assignments
+          </Button>
+        </Box>
+      )}
 
       <Box>
         <IconButton onClick={handleLogout} sx={{ color: 'red' }}>
