@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getCourses } from '../../services/courses.js';
+// import { getCourses } from '../../services/courses.js'; // Comment out the import
 import CourseItem from '../../components/CourseItem/CourseItem.jsx';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -19,7 +19,9 @@ const Courses = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        // Mock data for demonstration; replace with API call as needed
+        // const fetchedCourses = await getCourses(); // Comment out the API call
+
+        // Mock data
         const fetchedCourses = [
           { id: 1, name: 'SEB 0304' },
           { id: 2, name: 'SEB 0506' },
@@ -31,6 +33,7 @@ const Courses = () => {
 
         setCourses(fetchedCourses);
       } catch (error) {
+        console.error('Error fetching courses:', error);
         setError(error.message);
       } finally {
         setLoading(false);
@@ -67,7 +70,7 @@ const Courses = () => {
           }}
         >
           {courses.map((course) => (
-            <CourseItem key={course.id} course={course} handleClick={handleClick}/>
+            <CourseItem key={course.id} course={course} handleClick={handleClick} />
           ))}
         </Box>
       </div>

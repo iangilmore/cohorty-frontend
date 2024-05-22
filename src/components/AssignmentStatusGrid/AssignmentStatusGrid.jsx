@@ -52,8 +52,8 @@ function AssignmentStatusGrid() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {assignments.map((assignment) => (
-            <TableRow key={assignment.id}>
+          {assignments.map((assignment, index) => (
+            <TableRow key={assignment.id} sx={{ bgcolor: index % 2 === 0 ? '#e0f7fa' : '#f0f0f0' }}>
               <TableCell>{assignment.name}</TableCell>
               <TableCell align="center">
                 <Checkbox
@@ -80,4 +80,3 @@ function AssignmentStatusGrid() {
 }
 
 export default AssignmentStatusGrid;
-

@@ -1,7 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { getCourse } from '../../services/courses.js'; 
+// import { getCourse, addAssignmentToCourse } from '../../services/courses.js'; // Comment out the import
 
 export default function AssignmentsGrid({ courseId }) {
   const [assignments, setAssignments] = useState([]);
@@ -14,20 +30,24 @@ export default function AssignmentsGrid({ courseId }) {
   useEffect(() => {
     const fetchAssignments = async () => {
       try {
-        // TODO: uncomment below two lines when ready and remove the hardcoded array
-        // const data = await getCourse(courseId);
-        // const formattedAssignments = data.assignments.map(assignment => ({
-        //   id: assignment.id,
-        //   name: assignment.name,
-        //   dueDate: new Date(assignment.due_date).toLocaleDateString()
-        // }));
-        // TODO: uncomment below when ready and remove the hardcoded array
-        // setAssignments(formattedAssignments);
-        setAssignments([{ id: 1, name: 'JS Arrays Lab', dueDate: 'April 2' },
-        { id: 2, name: 'JS Function Lab', dueDate: 'April 5' },
-        { id: 3, name: 'JS Objects Lab', dueDate: 'April 8' },
-        { id: 4, name: 'JS Classes Lab', dueDate: 'April 12' },
-        { id: 5, name: 'Browser Based Game (Project 1)', dueDate: 'April 15' }]);
+        // const data = await getCourse(courseId); // Comment out the API call
+
+        // Mock data
+        const data = {
+          assignments: [
+            { id: 1, name: 'JS Arrays Lab', dueDate: 'April 2' },
+            { id: 2, name: 'JS Function Lab', dueDate: 'April 5' },
+            { id: 3, name: 'JS Objects Lab', dueDate: 'April 8' },
+            { id: 4, name: 'JS Classes Lab', dueDate: 'April 12' },
+            { id: 5, name: 'Browser Based Game (Project 1)', dueDate: 'April 15' }
+          ]
+        };
+        const formattedAssignments = data.assignments.map(assignment => ({
+          id: assignment.id,
+          name: assignment.name,
+          dueDate: assignment.dueDate
+        }));
+        setAssignments(formattedAssignments);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -56,13 +76,24 @@ export default function AssignmentsGrid({ courseId }) {
   };
 
   const handleAddAssignment = async () => {
-    try {
-      const data = await addAssignmentToCourse(courseId, newAssignment);
-      setAssignments((prev) => [...prev, data]);
-      handleClose();
-    } catch (error) {
-      console.error("Error adding assignment:", error);
-    }
+    // Mock data addition for now
+    const newId = assignments.length + 1;
+    const newAssignmentData = {
+      id: newId,
+      name: newAssignment.name,
+      dueDate: new Date(newAssignment.dueDate).toLocaleDateString()
+    };
+    setAssignments((prev) => [...prev, newAssignmentData]);
+    handleClose();
+
+    // Uncomment below when API is ready
+    // try {
+    //   const data = await addAssignmentToCourse(courseId, newAssignment);
+    //   setAssignments((prev) => [...prev, data]);
+    //   handleClose();
+    // } catch (error) {
+    //   console.error("Error adding assignment:", error);
+    // }
   };
 
   if (loading) return <p>Loading...</p>;
@@ -82,8 +113,8 @@ export default function AssignmentsGrid({ courseId }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {assignments.map((assignment) => (
-              <TableRow key={assignment.id}>
+            {assignments.map((assignment, index) => (
+              <TableRow key={assignment.id} sx={{ bgcolor: index % 2 === 0 ? '#e0f7fa' : '#f0f0f0' }}>
                 <TableCell component="th" scope="row">
                   <Button
                     onClick={() => handleNameClick(assignment.id)}
@@ -137,6 +168,7 @@ export default function AssignmentsGrid({ courseId }) {
           </Button>
         </DialogActions>
       </Dialog>
-    </Box>
+      </Box>
   );
 }
+
