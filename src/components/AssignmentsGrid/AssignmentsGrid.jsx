@@ -1,7 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
+import { useState, useEffect } from 'react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { getCourse } from '../../services/courses.js'; 
+import { getCourse, addAssignmentToCourse } from '../../services/courses.js'; 
 
 export default function AssignmentsGrid({ courseId }) {
   const [assignments, setAssignments] = useState([]);
@@ -58,7 +74,11 @@ export default function AssignmentsGrid({ courseId }) {
   const handleAddAssignment = async () => {
     try {
       const data = await addAssignmentToCourse(courseId, newAssignment);
-      setAssignments((prev) => [...prev, data]);
+      const formattedAssignment = {
+        ...data,
+        dueDate: new Date(data.dueDate).toLocaleDateString()
+      };
+      setAssignments((prev) => [...prev, formattedAssignment]);
       handleClose();
     } catch (error) {
       console.error("Error adding assignment:", error);
