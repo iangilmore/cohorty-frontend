@@ -2,13 +2,12 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Logo from "../../assets/cohortyLogo.png"
 
 
 
-export default function SignIn() {
+export default function LogIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -49,9 +48,6 @@ export default function SignIn() {
         >
           
           <img src={Logo} alt="Logo" style={{ width: '300px', height: 'auto' }}  />
-          <Typography component="h1" variant="h5" m={2} >
-            Sign in
-          </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ width: '100%' }}>
             <TextField
               margin="normal"
@@ -79,7 +75,7 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Log In
             </Button>
           </Box>
         </Box>
