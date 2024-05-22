@@ -51,10 +51,10 @@ export default function StudentTable({ courseId }) {
       } else if (absences >= 2 && absences <= 3) {
         return { bgcolor: '#fff3cd' }; // Light yellow for 80-100% and absences 2-3
       } else if (absences >= 4) {
-        return { bgcolor: '#e90000' }; // Dark red for 80-100% and absences 4 and higher
+        return { bgcolor: '#ffcdd2' }; // Dark red for 80-100% and absences 4 and higher
       }
     } else if (percentage < 80) {
-      return { bgcolor: '#e90000' }; // Light red for 0-79%
+      return { bgcolor: '#ffcdd2' }; // Light red for 0-79%
     }
     return {};
   };
