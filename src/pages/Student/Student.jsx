@@ -1,51 +1,55 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Button } from '@mui/material';
+import { useState } from 'react';
+import AssignmentStatusGrid from "../../components/AssignmentStatusGrid/AssignmentStatusGrid";
+import Attendance from "../../components/Attendance/Attendance";
+import { Tabs, Tab, Box, Typography } from '@mui/material';
 
-export default function StudentTable() {
-  const rows = [
-    { name: 'Ian Gilmore', assignment: '100%', absences: 0 },
-    { name: 'Addy Jaime', assignment: '100%', absences: 0 },
-    { name: 'Joshua Pierre', assignment: '100%', absences: 0 },
-    { name: 'Elton John', assignment: '50%', absences: 2 },
-    { name: 'Abel Tesfaye', assignment: '75%', absences: 1.33 },
-    { name: 'Alexa Clark', assignment: '100%', absences: 0 }
-  ];
+export default function Student() {
+  const [selectedTab, setSelectedTab] = useState('assignments');
 
-  // Function to handle click event on student name
-  const handleNameClick = (name) => {
-    console.log("Clicked on: ", name);
-    // Here you can define actions like opening a modal, displaying details, etc.
+  const handleChange = (event, newValue) => {
+    setSelectedTab(newValue);
   };
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" height="100vh" width="100%">
-      <TableContainer component={Paper} sx={{ maxWidth: 650, mx: "auto" }}>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Student</TableCell>
-              <TableCell align="right" sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Assignment %</TableCell>
-              <TableCell align="right" sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Absenses</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.name}>
-                <TableCell component="th" scope="row">
-                  {/* Wrap student name in a Button for clickable functionality */}
-                  <Button
-                    onClick={() => handleNameClick(row.name)}
-                    sx={{ textTransform: 'none', justifyContent: 'flex-start', color: 'inherit', padding: 0, minWidth: 'auto' }} // Minimal button styling
-                  >
-                    {row.name}
-                  </Button>
-                </TableCell>
-                <TableCell align="right">{row.assignment}</TableCell>
-                <TableCell align="right">{row.absences}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+    <Box
+      sx={{
+        width: '100%',
+        height: '100vh', // This will make sure the background covers the full view height
+        backgroundImage: 'url(https://images.pexels.com/photos/7438102/pexels-photo-7438102.jpeg)', // Direct image URL
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        display: 'flex',
+        justifyContent: 'center', // Centers children horizontally
+        alignItems: 'center' // Centers children vertically
+      }}
+    >
+      <Box
+        sx={{
+          width: '90%',
+          maxWidth: 800,
+          bgcolor: 'white', // Set the background color to white for better readability
+          p: 2, // Padding inside the box
+          boxShadow: 3, // Adds a shadow for depth, can be adjusted or removed as needed
+          borderRadius: '4px', // Optional: rounds the corners
+          display: 'flex',
+          flexDirection: 'column', // Aligns children vertically
+          alignItems: 'center', // Centers children horizontally
+          minHeight: '60vh', // Ensures a minimum height for the box
+        }}
+      >
+        <Typography variant="h4" sx={{ textAlign: 'center', mb: 2 }}>
+          Ian Gilmore
+        </Typography>
+        <Tabs value={selectedTab} onChange={handleChange} centered>
+          <Tab label="Assignments" value="assignments" />
+          <Tab label="Attendance" value="attendance" />
+        </Tabs>
+        <Box sx={{ mt: 2, width: '100%', height: '100%' }}>
+          {selectedTab === 'assignments' && <AssignmentStatusGrid />}
+          {selectedTab === 'attendance' && <Attendance />}
+        </Box>
+      </Box>
     </Box>
   );
 }

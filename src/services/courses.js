@@ -27,5 +27,11 @@ export const createCourse = async (courseData) => {
   }
 };
 
-
-
+export const addAssignmentToCourse = async (courseId, assignment) => {
+  try {
+    const response = await api.post(`/courses/${courseId}/assignments`, assignment);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -26,5 +26,3 @@ export const updateStudentDetails = async (courseId, studentId, studentData) => 
     throw error;
   }
 }
-
-

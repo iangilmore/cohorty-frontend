@@ -7,7 +7,6 @@ import {
   TableHead,
   TableRow,
   Checkbox,
-  Typography,
   Paper
 } from '@mui/material';
 
@@ -24,7 +23,18 @@ function AssignmentStatusGrid() {
   const handleCheckboxChange = (id, field) => {
     const newAssignments = assignments.map((assignment) => {
       if (assignment.id === id) {
-        return { ...assignment, [field]: !assignment[field] };
+        if (field === 'complete') {
+          // If marking complete, also mark submitted
+          return { ...assignment, submitted: true, complete: !assignment.complete };
+        } else if (field === 'submitted') {
+          // Prevent unchecking submitted if complete is checked
+          if (assignment.complete) {
+            return assignment; // Ignore changes to submitted if complete is true
+          } else {
+            // Toggle submitted only if complete is not checked
+            return { ...assignment, submitted: !assignment.submitted };
+          }
+        }
       }
       return assignment;
     });
@@ -33,9 +43,6 @@ function AssignmentStatusGrid() {
 
   return (
     <TableContainer component={Paper} sx={{ maxWidth: 650, margin: 'auto', mt: 4 }}>
-      <Typography variant="h4" sx={{ my: 2, textAlign: 'center' }}>
-        Ian Gilmore
-      </Typography>
       <Table aria-label="assignment status">
         <TableHead>
           <TableRow>
@@ -45,14 +52,16 @@ function AssignmentStatusGrid() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {assignments.map((assignment) => (
-            <TableRow key={assignment.id}>
+          {assignments.map((assignment, index) => (
+            <TableRow key={assignment.id} sx={{ bgcolor: index % 2 === 0 ? '#e0f7fa' : '#f0f0f0' }}>
               <TableCell>{assignment.name}</TableCell>
               <TableCell align="center">
                 <Checkbox
                   checked={assignment.submitted}
                   onChange={() => handleCheckboxChange(assignment.id, 'submitted')}
                   color="primary"
+                  // Disable the checkbox interaction if complete is true
+                  disabled={assignment.complete}
                 />
               </TableCell>
               <TableCell align="center">
