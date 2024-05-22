@@ -1,11 +1,12 @@
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import Logo from "../../assets/cohortyLogo.png"
+
+
 
 export default function SignIn() {
   const handleSubmit = (event) => {
@@ -46,10 +47,9 @@ export default function SignIn() {
             width: '100%', // Ensures the container fits to the maxWidth set by the Container
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
+          
+          <img src={Logo} alt="Logo" style={{ width: '300px', height: 'auto' }}  />
+          <Typography component="h1" variant="h5" m={2} >
             Sign in
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ width: '100%' }}>

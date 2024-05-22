@@ -6,7 +6,7 @@ import Course from './pages/Course/Course.jsx';
 import Courses from './pages/Courses/Courses.jsx';
 import Login from './pages/Login/Login.jsx';
 import Student from './pages/Student/Student.jsx';
-import Navbar from './components/Navbar/Navbar.jsx';
+import Navbar from './components/Navbar/Navbar.jsx'
 
 function App() {
   const [activeTab, setActiveTab] = useState('students');
@@ -17,11 +17,16 @@ function App() {
   };
 
   // Extract course name from the route state, if available
-  const courseName = location.state?.courseName || 'Cohort'; // Default course name
+  const courseName = location.state?.courseName || ''; // Default course name
+
+  // Determine if the current route is the login page
+  const isLoginPage = location.pathname === '/';
 
   return (
     <>
-      <Navbar activeTab={activeTab} onTabChange={handleTabChange} courseName={courseName} />
+      {!isLoginPage && (
+        <Navbar activeTab={activeTab} onTabChange={handleTabChange} courseName={courseName} />
+      )}
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/courses" element={<Courses />} />
