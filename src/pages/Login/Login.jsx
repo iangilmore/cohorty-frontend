@@ -3,6 +3,30 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { logIn } from '../../services/users'; // Assuming logIn is the correct function
+
+export default function Login() {
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+    isError: false,
+    errorMsg: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (event) => {
 import Logo from "../../assets/cohortyLogo.png"
 
 
@@ -10,11 +34,32 @@ import Logo from "../../assets/cohortyLogo.png"
 export default function LogIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    try {
+      const userData = await logIn(form); // Assuming logIn is the function to authenticate
+      // Assuming setUser is a context or state function to set the logged-in user
+      // setUser(userData);
+
+      navigate("/assignments");
+    } catch (error) {
+      console.error(error);
+      setForm((prevForm) => ({
+        ...prevForm,
+        isError: true,
+        errorMsg: "Invalid Credentials",
+        password: "",
+      }));
+    }
+  };
+
+  const renderError = () => {
+    if (form.isError) {
+      return (
+        <Typography color="error" variant="body2">
+          {form.errorMsg}
+        </Typography>
+      );
+    }
   };
 
   return (
@@ -55,9 +100,11 @@ export default function LogIn() {
               fullWidth
               id="email"
               label="Email Address"
-              name="email"
+              name="username" // Changed to match the state
               autoComplete="email"
               autoFocus
+              value={form.username} // Controlled component
+              onChange={handleChange}
             />
             <TextField
               margin="normal"
@@ -68,7 +115,10 @@ export default function LogIn() {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={form.password} // Controlled component
+              onChange={handleChange}
             />
+            {renderError()}
             <Button
               type="submit"
               fullWidth
@@ -83,3 +133,4 @@ export default function LogIn() {
     </Box>
   );
 }
+
