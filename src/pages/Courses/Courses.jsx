@@ -19,15 +19,24 @@ const Courses = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        setCourses([{ id: 1, name: 'SEB 0304' },
-                    { id: 2, name: 'SEB 0506' },
-                    { id: 3, name: 'SEB 0708' }]);
+        // Mock data for demonstration; replace with API call as needed
+        const fetchedCourses = [
+          { id: 1, name: 'SEB 0304' },
+          { id: 2, name: 'SEB 0506' },
+          { id: 3, name: 'SEB 0108' }
+        ];
+
+        // Sort courses by name (assuming name contains chronological order)
+        fetchedCourses.sort((a, b) => a.name.localeCompare(b.name));
+
+        setCourses(fetchedCourses);
       } catch (error) {
         setError(error.message);
       } finally {
         setLoading(false);
       }
     };
+
     fetchCourses();
   }, []);
 
@@ -49,24 +58,14 @@ const Courses = () => {
       }}
     >
       <div className="course-page">
-        <Box sx={{
-              marginTop: 2, // Reduced from 8 to 2 to bring the content closer to the top
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}>
-              {/* <Box
-              sx={{
-              width: 'auto',
-              bgcolor: 'white',
-              p: 3,
-              borderRadius: 2,
-              }}
-              >
-          <Typography component="h1" variant="h5">
-            My Courses
-          </Typography>
-          </Box> */}
+        <Box
+          sx={{
+            marginTop: 2, // Reduced from 8 to 2 to bring the content closer to the top
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
           {courses.map((course) => (
             <CourseItem key={course.id} course={course} handleClick={handleClick}/>
           ))}
