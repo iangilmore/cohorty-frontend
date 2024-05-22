@@ -63,9 +63,9 @@ export default function StudentTable({ courseId }) {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center">
-      <TableContainer component={Paper} sx={{ maxWidth: 650, mx: "auto" }}>
-        <Table aria-label="simple table">
+    // <Box display="flex" justifyContent="center" alignItems="center" >
+      <TableContainer component={Paper} sx={{ maxWidth: 650, mx: "auto"}}>
+        <Table aria-label="simple table" >
           <TableHead>
             <TableRow>
               <TableCell sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Student</TableCell>
@@ -91,6 +91,6 @@ export default function StudentTable({ courseId }) {
           </TableBody>
         </Table>
       </TableContainer>
-    </Box>
+    // </Box>
   );
 }
