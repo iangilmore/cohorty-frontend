@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { getCourse } from '../../services/courses.js'
@@ -23,8 +23,8 @@ export default function StudentTable({ courseId }) {
         // setStudents(formattedStudents);
         setStudents([
           { id: 1, name: 'Ian Gilmore', assignment_percentage: '100%', absences: 0 },
-          { id: 2, name: 'Addy Jaime', assignment_percentage: '100%', absences: 0 },
-          { id: 3, name: 'Joshua Pierre', assignment_percentage: '100%', absences: 0 },
+          { id: 2, name: 'Addy Jaime', assignment_percentage: '100%', absences: 2 },
+          { id: 3, name: 'Joshua Pierre', assignment_percentage: '100%', absences: 4 },
           { id: 4, name: 'Elton John', assignment_percentage: '50%', absences: 2 },
           { id: 5, name: 'Abel Tesfaye', assignment_percentage: '75%', absences: 1.33 },
           { id: 6, name: 'Alexa Clark', assignment_percentage: '100%', absences: 0 }
@@ -43,6 +43,22 @@ export default function StudentTable({ courseId }) {
     navigate(`/${courseId}/students/${studentId}`);
   };
 
+  const getRowStyle = (assignmentPercentage, absences) => {
+    const percentage = parseFloat(assignmentPercentage);
+    if (percentage >= 80) {
+      if (absences <= 1) {
+        return { bgcolor: '#d0f0c0' }; // Light green for 80-100% and absences 1 or less
+      } else if (absences >= 2 && absences <= 3) {
+        return { bgcolor: '#fff3cd' }; // Light yellow for 80-100% and absences 2-3
+      } else if (absences >= 4) {
+        return { bgcolor: '#e90000' }; // Dark red for 80-100% and absences 4 and higher
+      }
+    } else if (percentage < 80) {
+      return { bgcolor: '#e90000' }; // Light red for 0-79%
+    }
+    return {};
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -53,13 +69,13 @@ export default function StudentTable({ courseId }) {
           <TableHead>
             <TableRow>
               <TableCell sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Student</TableCell>
-              <TableCell align="right" sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Assignment Completion</TableCell>
+              <TableCell align="right" sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Assignment %</TableCell>
               <TableCell align="right" sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Absences</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {students.map((student) => (
-              <TableRow key={student.id}>
+              <TableRow key={student.id} sx={getRowStyle(student.assignment_percentage, student.absences)}>
                 <TableCell component="th" scope="row">
                   <Button
                     onClick={() => handleNameClick(student.id)}
@@ -78,4 +94,3 @@ export default function StudentTable({ courseId }) {
     </Box>
   );
 }
-
