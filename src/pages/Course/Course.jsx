@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { Typography, Box, Paper } from '@mui/material';
 import StudentTable from '../../components/StudentsOverviewGrid/StudentsOverviewGrid.jsx';

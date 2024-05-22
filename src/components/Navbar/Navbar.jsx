@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Button, Box } from '@mui/material';
-import GridOnRoundedIcon from '@mui/icons-material/GridOnRounded';
+import { Button, Box, IconButton } from '@mui/material';
+import Symbol from "../../assets/cohortySymbol.png";
 import { useLocation, useNavigate } from 'react-router-dom';
+import LogoutIcon from '@mui/icons-material/Logout';
 
-export default function NavBar({ onTabChange, courseName }) {
+export default function Navbar({ onTabChange, courseName }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [activeTabState, setActiveTabState] = useState(location.pathname.includes('assignments') ? 'assignments' : 'students');
@@ -18,6 +19,12 @@ export default function NavBar({ onTabChange, courseName }) {
     navigate('/courses');
   };
 
+  const handleLogout = () => {
+    // Add your logout logic here
+  };
+
+  const showTabs = location.pathname !== '/courses';
+
   return (
     <Box 
       display="flex"
@@ -30,30 +37,38 @@ export default function NavBar({ onTabChange, courseName }) {
       bgcolor="background.paper"
     >
       <Box display="flex" alignItems="center">
-        <GridOnRoundedIcon fontSize="large" />
+        <Button onClick={handleCourseClick} sx={{ padding: 0, minWidth: 0 }}>
+          <img src={Symbol} alt="Symbol" style={{ width: '30px', height: 'auto' }} />
+        </Button>
         <Button variant="text" sx={{ fontWeight: 'bold' }} onClick={handleCourseClick}>
           {courseName}
         </Button>
       </Box>
 
-      <Box display="flex" gap={2}> 
-        <Button 
-          variant="text" 
-          sx={{ fontWeight: activeTabState === 'students' ? 'bold' : 'normal' }}
-          onClick={() => handleTabChange('students')}
-        >
-          Students
-        </Button>
-        <Button 
-          variant="text" 
-          sx={{ fontWeight: activeTabState === 'assignments' ? 'bold' : 'normal' }}
-          onClick={() => handleTabChange('assignments')}
-        >
-          Assignments
-        </Button>
-      </Box>
+      {showTabs && (
+        <Box display="flex" gap={2} justifyContent="center" flexGrow={1}> 
+          <Button 
+            variant="text" 
+            sx={{ fontWeight: activeTabState === 'students' ? 'bold' : 'normal' }}
+            onClick={() => handleTabChange('students')}
+          >
+            Students
+          </Button>
+          <Button 
+            variant="text" 
+            sx={{ fontWeight: activeTabState === 'assignments' ? 'bold' : 'normal' }}
+            onClick={() => handleTabChange('assignments')}
+          >
+            Assignments
+          </Button>
+        </Box>
+      )}
 
-      <Button variant="outlined">Log Out</Button>
+      <Box>
+        <IconButton onClick={handleLogout} sx={{ color: 'red' }}>
+          <LogoutIcon />
+        </IconButton>
+      </Box>
     </Box>
   );
 }

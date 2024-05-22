@@ -82,7 +82,7 @@
 
 // export default SingleAssignmentGrid;
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Checkbox, Typography, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 // Mock services imports
@@ -220,8 +220,8 @@ export default function SingleAssignmentGrid({ courseId, assignmentId }) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {assignments.map((assignment) => (
-                                <TableRow key={assignment.id}>
+                            {assignments.map((assignment, index) => (
+                                <TableRow key={assignment.id} sx={{ bgcolor: index % 2 === 0 ? '#e0f7fa' : '#f0f0f0' }}>
                                     <TableCell>{assignment.name}</TableCell>
                                     <TableCell align="center">
                                         <Checkbox
