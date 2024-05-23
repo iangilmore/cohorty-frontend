@@ -151,7 +151,7 @@ export default function StudentTable() {
   }, [courseId]);
 
   const handleNameClick = (studentId, studentName) => {
-    navigate(`/${courseId}/students/${studentId}`, { state: { studentName } } );
+    navigate(`/courses/${courseId}/students/${studentId}`, { state: { studentName } } );
   };
 
   const getRowStyle = (assignmentPercentage, absences) => {
