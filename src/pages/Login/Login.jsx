@@ -36,7 +36,7 @@ export default function LogIn() {
       // Assuming setUser is a context or state function to set the logged-in user
       // setUser(userData);
 
-      navigate("/assignments");
+      navigate("/courses");
     } catch (error) {
       console.error(error);
       setForm((prevForm) => ({

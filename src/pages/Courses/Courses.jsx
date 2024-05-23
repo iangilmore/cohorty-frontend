@@ -9,7 +9,7 @@ const Courses = () => {
   const navigate = useNavigate();
 
   const handleClick = (courseId, courseName) => {
-    navigate(`/${courseId}?tab=assignments`, { state: { courseName } });
+    navigate(`/courses/${courseId}/assignments`, { state: { courseName } });
   };
 
   const [courses, setCourses] = useState([]);
