@@ -165,154 +165,125 @@
 // }
 
 import React, { useState, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Checkbox, Typography, Box } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getCourse } from '../../services/courses.js';
-import { getAssignmentDetails, updateAssignmentDetails } from '../../services/assignments.js';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Checkbox,
+  Paper,
+  Button
+} from '@mui/material';
+import { useParams } from 'react-router-dom';
+import { getCourses } from '../../services/courses.js';
+import { getStudentDetails, updateStudentDetails } from '../../services/students.js';
 
-export default function SingleAssignmentGrid() {
-  const { courseId, assignmentId } = useParams();
-
-  const [students, setStudents] = useState([]);
+function AssignmentStatusGrid() {
+  const { courseId, studentId } = useParams();
   const [assignments, setAssignments] = useState([]);
-  const [assignmentData, setAssignmentData] = useState(null);
+  const [submissions, setSubmissions] = useState([]);
+  const [initialSubmissions, setInitialSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchStudentsAndAssignments = async () => {
+    const fetchData = async () => {
       try {
-        const courseDataArray = await getCourse(courseId);
-        const assignmentDetails = await getAssignmentDetails(courseId, assignmentId);
+        const [courseData, studentData] = await Promise.all([
+          getCourses(courseId),
+          getStudentDetails(courseId, studentId)
+        ]);
 
-        const courseData = courseDataArray.find(course => course.id.toString() === courseId);
-
-        if (!courseData) {
-          throw new Error("Course not found");
+        const course = courseData.find(course => course.id.toString() === courseId);
+        if (course) {
+          setAssignments(course.assignments.map(assignment => ({
+            id: assignment.id,
+            name: assignment.name
+          })));
         }
 
-        setStudents(courseData.students);
-        setAssignmentData(assignmentDetails);
+        const formattedSubmissions = studentData.submissions.map(submission => ({
+          assignment: submission.assignment,
+          student: submission.student,
+          is_complete: submission.is_complete
+        }));
+        setSubmissions(formattedSubmissions);
+        setInitialSubmissions(formattedSubmissions);
 
-        const formattedAssignments = courseData.students.map(student => {
-          const submission = assignmentDetails.submissions.find(sub => sub.student === student.id) || {};
-          return {
-            id: student.id,
-            name: student.name,
-            submitted: !!submission.id,
-            complete: submission.is_complete || false
-          };
-        });
-
-        setAssignments(formattedAssignments);
       } catch (error) {
-        console.error('Error fetching students and assignments:', error);
         setError(error.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchStudentsAndAssignments();
-  }, [courseId, assignmentId]);
+    fetchData();
+  }, [courseId, studentId]);
 
-  const handleCheckboxChange = (id, field) => {
-    setAssignments(prevAssignments =>
-      prevAssignments.map(assignment => {
-        if (assignment.id === id) {
-          if (field === 'complete') {
-            return { ...assignment, submitted: true, complete: !assignment.complete };
-          } else if (field === 'submitted') {
-            if (assignment.complete) {
-              return assignment;
-            } else {
-              return { ...assignment, submitted: !assignment.submitted };
-            }
-          }
+  const handleCheckboxChange = (assignmentId, field) => {
+    const newSubmissions = submissions.map(submission => {
+      if (submission.assignment === assignmentId) {
+        if (field === 'complete') {
+          return { ...submission, is_complete: !submission.is_complete };
         }
-        return assignment;
-      })
-    );
+      }
+      return submission;
+    });
+
+    setSubmissions(newSubmissions);
   };
 
-  const handleNavigateAway = async () => {
+  const handleConfirmChanges = async () => {
     try {
-      await Promise.all(
-        assignments.map(async (assignment) => {
-          if (assignment.submitted) {
-            await updateAssignmentDetails(assignmentId, assignment.id, { is_complete: assignment.complete });
-          }
-        })
-      );
+      await updateStudentDetails(courseId, studentId, { submissions });
+      setInitialSubmissions(submissions);
     } catch (error) {
-      console.error("Error updating assignment details:", error);
+      setError(error.message);
     }
   };
-
-  useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      event.preventDefault();
-      handleNavigateAway();
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      handleNavigateAway();
-    };
-  }, [assignments]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <Box sx={{ width: '100%', mt: 4, display: 'flex', justifyContent: 'center' }}>
-      <Box sx={{ maxWidth: 800, width: '100%', bgcolor: 'background.paper', p: 2, boxShadow: 3, borderRadius: 2 }}>
-        {assignmentData && (
-          <>
-            <Typography variant="h5" sx={{ mb: 2, textAlign: 'center' }}>
-              {assignmentData.name}
-            </Typography>
-            <Typography variant="subtitle1" sx={{ mb: 4, textAlign: 'center' }}>
-              due {new Date(assignmentData.due_date).toLocaleDateString()}
-            </Typography>
-          </>
-        )}
-        <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
-          <Table sx={{ minWidth: 650 }}>
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell align="center">Submitted</TableCell>
-                <TableCell align="center">Complete</TableCell>
+    <TableContainer component={Paper} sx={{ maxWidth: 650, margin: 'auto', mt: 4 }}>
+      <Table aria-label="assignment status">
+        <TableHead>
+          <TableRow>
+            <TableCell>Assignment</TableCell>
+            <TableCell align="center">Complete</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {assignments.map((assignment, index) => {
+            const submission = submissions.find(sub => sub.assignment === assignment.id) || {};
+            return (
+              <TableRow key={assignment.id} sx={{ bgcolor: index % 2 === 0 ? '#e0f7fa' : '#f0f0f0' }}>
+                <TableCell>{assignment.name}</TableCell>
+                <TableCell align="center">
+                  <Checkbox
+                    checked={submission.is_complete || false}
+                    onChange={() => handleCheckboxChange(assignment.id, 'complete')}
+                    color="primary"
+                  />
+                </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {assignments.map((assignment, index) => (
-                <TableRow key={assignment.id} sx={{ bgcolor: assignment.complete ? '#c8e6c9' : assignment.submitted ? '#ffecb3' : '#ffcdd2' }}>
-                  <TableCell>{assignment.name}</TableCell>
-                  <TableCell align="center">
-                    <Checkbox
-                      checked={assignment.submitted}
-                      onChange={() => handleCheckboxChange(assignment.id, 'submitted')}
-                      color="primary"
-                      disabled={assignment.complete}
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Checkbox
-                      checked={assignment.complete}
-                      onChange={() => handleCheckboxChange(assignment.id, 'complete')}
-                      color="primary"
-                    />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
-    </Box>
+            );
+          })}
+        </TableBody>
+      </Table>
+      <Button
+        variant="contained"
+        color="primary"
+        sx={{ mt: 2 }}
+        onClick={handleConfirmChanges}
+      >
+        Confirm Changes
+      </Button>
+    </TableContainer>
   );
 }
+
+export default AssignmentStatusGrid;
