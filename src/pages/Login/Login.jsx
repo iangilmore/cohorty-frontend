@@ -5,12 +5,16 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Logo from "../../assets/cohortyLogo.png";
 import { logIn } from '../../services/users'; // Assuming logIn is the correct function
 
+import { AuthContext } from '../../context/AuthContextComponent.jsx';
+
+
 export default function LogIn() {
   const navigate = useNavigate();
+  const { setIsUserLoggedIn } = useContext(AuthContext)
 
   const [form, setForm] = useState({
     username: "",
@@ -36,6 +40,7 @@ export default function LogIn() {
       // Assuming setUser is a context or state function to set the logged-in user
       // setUser(userData);
 
+      setIsUserLoggedIn(true)
       navigate("/courses");
     } catch (error) {
       console.error(error);
