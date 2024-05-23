@@ -1,4 +1,87 @@
-import { useState } from 'react';
+// import { useState } from 'react';
+// import {
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableContainer,
+//   TableHead,
+//   TableRow,
+//   Checkbox,
+//   Paper
+// } from '@mui/material';
+
+// function AssignmentStatusGrid() {
+//   const [assignments, setAssignments] = useState([
+//     { id: 1, name: 'JS Arrays Lab', submitted: true, complete: true },
+//     { id: 2, name: 'JS Function Lab', submitted: false, complete: false },
+//     { id: 3, name: 'JS Objects Lab', submitted: true, complete: true },
+//     { id: 4, name: 'JS Classes Lab', submitted: true, complete: false },
+//     { id: 5, name: 'Browser Based Game (Project 1)', submitted: true, complete: false }
+//   ]);
+
+//   // Handle checkbox change
+//   const handleCheckboxChange = (id, field) => {
+//     const newAssignments = assignments.map((assignment) => {
+//       if (assignment.id === id) {
+//         if (field === 'complete') {
+//           // If marking complete, also mark submitted
+//           return { ...assignment, submitted: true, complete: !assignment.complete };
+//         } else if (field === 'submitted') {
+//           // Prevent unchecking submitted if complete is checked
+//           if (assignment.complete) {
+//             return assignment; // Ignore changes to submitted if complete is true
+//           } else {
+//             // Toggle submitted only if complete is not checked
+//             return { ...assignment, submitted: !assignment.submitted };
+//           }
+//         }
+//       }
+//       return assignment;
+//     });
+//     setAssignments(newAssignments);
+//   };
+
+//   return (
+//     <TableContainer component={Paper} sx={{ maxWidth: 650, margin: 'auto', mt: 4 }}>
+//       <Table aria-label="assignment status">
+//         <TableHead>
+//           <TableRow>
+//             <TableCell>Assignment</TableCell>
+//             <TableCell align="center">Submitted</TableCell>
+//             <TableCell align="center">Complete</TableCell>
+//           </TableRow>
+//         </TableHead>
+//         <TableBody>
+//           {assignments.map((assignment, index) => (
+//             <TableRow key={assignment.id} sx={{ bgcolor: index % 2 === 0 ? '#e0f7fa' : '#f0f0f0' }}>
+//               <TableCell>{assignment.name}</TableCell>
+//               <TableCell align="center">
+//                 <Checkbox
+//                   checked={assignment.submitted}
+//                   onChange={() => handleCheckboxChange(assignment.id, 'submitted')}
+//                   color="primary"
+//                   // Disable the checkbox interaction if complete is true
+//                   disabled={assignment.complete}
+//                 />
+//               </TableCell>
+//               <TableCell align="center">
+//                 <Checkbox
+//                   checked={assignment.complete}
+//                   onChange={() => handleCheckboxChange(assignment.id, 'complete')}
+//                   color="primary"
+//                 />
+//               </TableCell>
+//             </TableRow>
+//           ))}
+//         </TableBody>
+//       </Table>
+//     </TableContainer>
+//   );
+// }
+
+// export default AssignmentStatusGrid;
+
+import React, { useState, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -9,37 +92,70 @@ import {
   Checkbox,
   Paper
 } from '@mui/material';
+import { useParams } from 'react-router-dom';
+import { getCourses } from '../../services/courses.js';
+import { updateAssignmentDetails } from '../../services/assignments.js';
 
 function AssignmentStatusGrid() {
-  const [assignments, setAssignments] = useState([
-    { id: 1, name: 'JS Arrays Lab', submitted: true, complete: true },
-    { id: 2, name: 'JS Function Lab', submitted: false, complete: false },
-    { id: 3, name: 'JS Objects Lab', submitted: true, complete: true },
-    { id: 4, name: 'JS Classes Lab', submitted: true, complete: false },
-    { id: 5, name: 'Browser Based Game (Project 1)', submitted: true, complete: false }
-  ]);
+  const { courseId } = useParams();
+  const [assignments, setAssignments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Handle checkbox change
-  const handleCheckboxChange = (id, field) => {
+  useEffect(() => {
+    const fetchCourseDetails = async () => {
+      try {
+        const courseData = await getCourses(courseId);
+        const course = courseData.find(course => course.id.toString() === courseId);
+  
+        if (course) {
+          const formattedAssignments = course.assignments.map(assignment => ({
+            id: assignment.id,
+            name: assignment.name,
+            submitted: assignment.submitted, // Assuming the API returns this field
+            complete: assignment.complete // Assuming the API returns this field
+          }));
+          setAssignments(formattedAssignments);
+        } else {
+          setError('Course not found');
+        }
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchCourseDetails();
+  }, [courseId]);
+
+  const handleCheckboxChange = async (id, field) => {
     const newAssignments = assignments.map((assignment) => {
       if (assignment.id === id) {
         if (field === 'complete') {
           // If marking complete, also mark submitted
-          return { ...assignment, submitted: true, complete: !assignment.complete };
+          assignment = { ...assignment, submitted: true, complete: !assignment.complete };
         } else if (field === 'submitted') {
           // Prevent unchecking submitted if complete is checked
           if (assignment.complete) {
             return assignment; // Ignore changes to submitted if complete is true
           } else {
             // Toggle submitted only if complete is not checked
-            return { ...assignment, submitted: !assignment.submitted };
+            assignment = { ...assignment, submitted: !assignment.submitted };
           }
         }
+
+        // Send update to the API
+        updateAssignmentDetails(courseId, assignment.id, { is_complete: assignment.complete, submitted: assignment.submitted });
       }
       return assignment;
     });
+
     setAssignments(newAssignments);
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <TableContainer component={Paper} sx={{ maxWidth: 650, margin: 'auto', mt: 4 }}>
