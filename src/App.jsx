@@ -9,7 +9,7 @@ import Student from './pages/Student/Student.jsx';
 import Navbar from './components/Navbar/Navbar.jsx'
 
 function App() {
-  const [activeTab, setActiveTab] = useState('students');
+  const [activeTab, setActiveTab] = useState('assignments');
   const location = useLocation();
 
   const handleTabChange = (tab) => {
@@ -30,9 +30,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/courses" element={<Courses />} />
-        <Route path="/students" element={<Course activeTab="students" />} />
-        <Route path="/assignments" element={<Course activeTab="assignments" />} />
-        <Route path="/:courseId" element={<Course activeTab={activeTab} />} />
+        <Route path="courses/:courseId/students" element={<Course activeTab="students" />} />
+        <Route path="courses/:courseId/assignments" element={<Course activeTab="assignments" />} />
+        {/* <Route path="/:courseId" element={<Course activeTab={activeTab} />} /> */}
         <Route path="/:courseId/students/:studentId" element={<Student />} />
         <Route path="/:courseId/assignments/:assignmentId" element={<Assignment />} />
       </Routes>
