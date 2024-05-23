@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button, Box, IconButton } from '@mui/material';
-import Symbol from "../../assets/cohortySymbol.png";
+import Symbol from "../../assets/cohortyLogo.png";
+// import Logo from '../../assets/cohortySymbol.png'
 import { useLocation, useNavigate } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
 
