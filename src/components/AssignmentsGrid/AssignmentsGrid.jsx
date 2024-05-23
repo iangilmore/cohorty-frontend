@@ -17,7 +17,7 @@ import {
   TextField
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-// import { getCourse, addAssignmentToCourse } from '../../services/courses.js'; // Comment out the import
+import { getCourse } from '../../services/courses.js'; 
 
 export default function AssignmentsGrid({ courseId }) {
   const [assignments, setAssignments] = useState([]);
@@ -30,18 +30,7 @@ export default function AssignmentsGrid({ courseId }) {
   useEffect(() => {
     const fetchAssignments = async () => {
       try {
-        // const data = await getCourse(courseId); // Comment out the API call
-
-        // Mock data
-        const data = {
-          assignments: [
-            { id: 1, name: 'JS Arrays Lab', dueDate: 'April 2' },
-            { id: 2, name: 'JS Function Lab', dueDate: 'April 5' },
-            { id: 3, name: 'JS Objects Lab', dueDate: 'April 8' },
-            { id: 4, name: 'JS Classes Lab', dueDate: 'April 12' },
-            { id: 5, name: 'Browser Based Game (Project 1)', dueDate: 'April 15' }
-          ]
-        };
+        const data = await getCourse(courseId);
         const formattedAssignments = data.assignments.map(assignment => ({
           id: assignment.id,
           name: assignment.name,

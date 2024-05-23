@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-// import { getCourses } from '../../services/courses.js'; // Comment out the import
+import { useState, useEffect } from 'react';
+import { getCourses } from '../../services/courses.js';
 import CourseItem from '../../components/CourseItem/CourseItem.jsx';
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,14 +19,7 @@ const Courses = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        // const fetchedCourses = await getCourses(); // Comment out the API call
-
-        // Mock data
-        const fetchedCourses = [
-          { id: 1, name: 'SEB 0304' },
-          { id: 2, name: 'SEB 0506' },
-          { id: 3, name: 'SEB 0108' }
-        ];
+        const fetchedCourses = await getCourses(); 
 
         // Sort courses by name (assuming name contains chronological order)
         fetchedCourses.sort((a, b) => a.name.localeCompare(b.name));
