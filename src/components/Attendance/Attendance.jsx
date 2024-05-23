@@ -180,7 +180,6 @@
 
 // export default Attendance;
 
-
 import React, { useState, useEffect } from 'react';
 import { Typography, IconButton, Grid, Container, Box, Modal, TextField, Button, List, ListItem, ListItemText, ListItemSecondaryAction } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -274,31 +273,37 @@ function Attendance() {
 
   const handleAddDate = async () => {
     const formattedDate = formatDateForBackend(newDate);
-    const updateAttendance = async (newAttendance) => {
-      try {
-        await updateStudentDetails(courseId, studentId, { attendance: newAttendance });
-      } catch (error) {
-        setError(error.message);
-      }
-    };
+    let newAttendance = [];
 
     if (modalTitle === "Add New Absence") {
       const updatedAbsences = [...absences, formattedDate];
       setAbsences(sortDates(updatedAbsences));
-      const newAttendance = [
+      newAttendance = [
         ...updatedAbsences.map(date => ({ date: formatDateForBackend(date), status: 'Absent' })),
         ...tardies.map(date => ({ date: formatDateForBackend(date), status: 'Late' }))
       ];
-      await updateAttendance(newAttendance);
     } else {
       const updatedTardies = [...tardies, formattedDate];
       setTardies(sortDates(updatedTardies));
-      const newAttendance = [
+      newAttendance = [
         ...absences.map(date => ({ date: formatDateForBackend(date), status: 'Absent' })),
         ...updatedTardies.map(date => ({ date: formatDateForBackend(date), status: 'Late' }))
       ];
-      await updateAttendance(newAttendance);
     }
+
+    try {
+      const studentData = await getStudentDetails(courseId, studentId);
+      const existingAttendance = studentData.attendance.map(att => ({
+        date: formatDateForBackend(att.date),
+        status: att.status
+      }));
+      newAttendance = [...existingAttendance, ...newAttendance];
+
+      await updateStudentDetails(courseId, studentId, { attendance: newAttendance });
+    } catch (error) {
+      setError(error.message);
+    }
+
     handleClose();
   };
 
@@ -307,32 +312,36 @@ function Attendance() {
   };
 
   const handleDelete = async (type, index) => {
-    const updateAttendance = async (newAttendance) => {
-      try {
-        await updateStudentDetails(courseId, studentId, { attendance: newAttendance });
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-
+    let updatedList, newAttendance;
     if (type === "absences") {
-      const updatedAbsences = [...absences];
-      updatedAbsences.splice(index, 1);
-      setAbsences(updatedAbsences);
-      const newAttendance = [
-        ...updatedAbsences.map(date => ({ date: formatDateForBackend(date), status: 'Absent' })),
+      updatedList = [...absences];
+      updatedList.splice(index, 1);
+      setAbsences(updatedList);
+      newAttendance = [
+        ...updatedList.map(date => ({ date: formatDateForBackend(date), status: 'Absent' })),
         ...tardies.map(date => ({ date: formatDateForBackend(date), status: 'Late' }))
       ];
-      await updateAttendance(newAttendance);
     } else {
-      const updatedTardies = [...tardies];
-      updatedTardies.splice(index, 1);
-      setTardies(updatedTardies);
-      const newAttendance = [
+      updatedList = [...tardies];
+      updatedList.splice(index, 1);
+      setTardies(updatedList);
+      newAttendance = [
         ...absences.map(date => ({ date: formatDateForBackend(date), status: 'Absent' })),
-        ...updatedTardies.map(date => ({ date: formatDateForBackend(date), status: 'Late' }))
+        ...updatedList.map(date => ({ date: formatDateForBackend(date), status: 'Late' }))
       ];
-      await updateAttendance(newAttendance);
+    }
+
+    try {
+      const studentData = await getStudentDetails(courseId, studentId);
+      const existingAttendance = studentData.attendance.map(att => ({
+        date: formatDateForBackend(att.date),
+        status: att.status
+      }));
+      newAttendance = [...existingAttendance, ...newAttendance];
+
+      await updateStudentDetails(courseId, studentId, { attendance: newAttendance });
+    } catch (error) {
+      setError(error.message);
     }
   };
 
@@ -350,7 +359,7 @@ function Attendance() {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
-  
+
   return (
     <Container maxWidth="sm" sx={{ mt: 2, mb: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <Box sx={{
