@@ -5,16 +5,17 @@ import CourseItem from '../../components/CourseItem/CourseItem.jsx';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 
-const Courses = () => {
+const Courses = ({ setCourseId, setCourseName }) => {
   const navigate = useNavigate();
-
-  const handleClick = (courseId, courseName) => {
-    navigate(`/courses/${courseId}/assignments`, { state: { courseName } });
-  };
-
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const handleClick = (courseId, courseName) => {
+    setCourseId(courseId);
+    setCourseName(courseName);
+    navigate(`/courses/${courseId}/assignments`, { state: { courseName } });
+  };
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -63,7 +64,7 @@ const Courses = () => {
           }}
         >
           {courses.map((course) => (
-            <CourseItem key={course.id} course={course} handleClick={handleClick} />
+            <CourseItem key={course.id} course={course} handleClick={handleClick}/>
           ))}
         </Box>
       </div>
