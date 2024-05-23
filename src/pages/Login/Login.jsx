@@ -87,7 +87,7 @@ export default function LogIn() {
             width: '100%', // Ensures the container fits to the maxWidth set by the Container
           }}
         >
-          <img src={Logo} alt="Logo" style={{ width: '300px', height: 'auto' }} />
+          <img src={Logo} alt="Logo" style={{ width: '200px', height: 'auto' }} />
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ width: '100%' }}>
             <TextField
               margin="normal"
