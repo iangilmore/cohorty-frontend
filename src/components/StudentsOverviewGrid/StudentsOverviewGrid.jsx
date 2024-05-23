@@ -150,8 +150,8 @@ export default function StudentTable() {
     fetchStudents();
   }, [courseId]);
 
-  const handleNameClick = (studentId) => {
-    navigate(`/${courseId}/students/${studentId}`);
+  const handleNameClick = (studentId, studentName) => {
+    navigate(`/${courseId}/students/${studentId}`, { state: { studentName } } );
   };
 
   const getRowStyle = (assignmentPercentage, absences) => {
@@ -188,7 +188,7 @@ export default function StudentTable() {
             <TableRow key={student.id} sx={getRowStyle(student.assignment_percentage, student.absences)}>
               <TableCell component="th" scope="row">
                 <Button
-                  onClick={() => handleNameClick(student.id)}
+                  onClick={() => handleNameClick(student.id, student.name)}
                   sx={{ textTransform: 'none', justifyContent: 'flex-start', color: 'inherit', padding: 0, minWidth: 'auto' }}
                 >
                   {student.name}

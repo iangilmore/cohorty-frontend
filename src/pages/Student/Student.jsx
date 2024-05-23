@@ -1,10 +1,13 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom'
 import AssignmentStatusGrid from "../../components/AssignmentStatusGrid/AssignmentStatusGrid";
 import Attendance from "../../components/Attendance/Attendance";
 import { Tabs, Tab, Box, Typography } from '@mui/material';
 
 export default function Student() {
   const [selectedTab, setSelectedTab] = useState('assignments');
+  const location = useLocation();
+  const studentName = location.state?.studentName
 
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
@@ -39,7 +42,7 @@ export default function Student() {
         }}
       >
         <Typography variant="h4" sx={{ textAlign: 'center', mb: 2 }}>
-          Ian Gilmore
+          {studentName}
         </Typography>
         <Tabs value={selectedTab} onChange={handleChange} centered>
           <Tab label="Assignments" value="assignments" />
