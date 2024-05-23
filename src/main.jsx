@@ -13,11 +13,16 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
+// context
+import { AuthContextComponent } from './context/AuthContextComponent.jsx';
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <Router>
-        <App />
+        <AuthContextComponent>
+          <App />
+        </AuthContextComponent>
       </Router>
     </ThemeProvider>
   </React.StrictMode>,
