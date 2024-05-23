@@ -191,7 +191,8 @@ import {
   TextField
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getCourse, addAssignmentToCourse } from '../../services/courses.js';
+import { getCourse } from '../../services/courses.js';
+import { addAssignmentToCourse } from '../../services/assignments.js';
 
 export default function AssignmentsGrid() {
   const { courseId } = useParams();
@@ -253,7 +254,6 @@ export default function AssignmentsGrid() {
       const newAssignmentData = {
         name: newAssignment.name,
         due_date: newAssignment.dueDate, // Ensure this is in YYYY-MM-DD format
-        course: parseInt(courseId, 10) // Ensure courseId is an integer
       };
       console.log('Sending new assignment data:', newAssignmentData);
       const data = await addAssignmentToCourse(courseId, newAssignmentData);

@@ -1,18 +1,8 @@
 import api from "./apiConfig.js";
 
-
-// export const addAssignmentToCourse = async (courseId) => {
-//   try {
-//     const response = await api.post(`/courses/${courseId}/assignments/`);
-//     return response.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
 export const addAssignmentToCourse = async (courseId, assignmentData) => {
   try {
-    const response = await api.post(`/courses/${courseId}/assignments/`, assignmentData); // Add trailing slash
+    const response = await api.post(`/courses/${courseId}/assignments/`, assignmentData);
     return response.data;
   } catch (error) {
     console.error('Error in addAssignmentToCourse:', error.response ? error.response.data : error.message);
