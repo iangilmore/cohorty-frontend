@@ -10,26 +10,27 @@ import Navbar from './components/Navbar/Navbar.jsx'
 
 function App() {
   const [activeTab, setActiveTab] = useState('assignments');
+  const [courseName, setCourseName] = useState('');
+  const [courseId, setCourseId] = useState('');
   const location = useLocation();
+  // Extract course name from the route state, if available
+  // const courseName = location.state?.courseName || ''; // Default course name
+  // Determine if the current route is the login page
+  const isLoginPage = location.pathname === '/';
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
-  // Extract course name from the route state, if available
-  const courseName = location.state?.courseName || ''; // Default course name
-
-  // Determine if the current route is the login page
-  const isLoginPage = location.pathname === '/';
 
   return (
     <>
       {!isLoginPage && (
-        <Navbar activeTab={activeTab} onTabChange={handleTabChange} courseName={courseName} />
+        <Navbar activeTab={activeTab} onTabChange={handleTabChange} courseName={courseName} courseId={courseId}/>
       )}
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/courses" element={<Courses />} />
+        <Route path="/courses" element={<Courses setCourseId={setCourseId} setCourseName={setCourseName}/>} />
         <Route path="courses/:courseId/students" element={<Course activeTab="students" />} />
         <Route path="courses/:courseId/assignments" element={<Course activeTab="assignments" />} />
         {/* <Route path="/:courseId" element={<Course activeTab={activeTab} />} /> */}

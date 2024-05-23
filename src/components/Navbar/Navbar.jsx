@@ -4,7 +4,7 @@ import Symbol from "../../assets/cohortySymbol.png";
 import { useLocation, useNavigate } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-export default function Navbar({ onTabChange, courseName }) {
+export default function Navbar({ onTabChange, courseName, courseId }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [activeTabState, setActiveTabState] = useState(location.pathname.includes('assignments') ? 'assignments' : 'students');
@@ -12,7 +12,7 @@ export default function Navbar({ onTabChange, courseName }) {
   const handleTabChange = (tab) => {
     setActiveTabState(tab);
     onTabChange(tab);
-    navigate(`/${tab}`);
+    navigate(`/courses/${courseId}/${tab}`);
   };
 
   const handleCourseClick = () => {
@@ -40,7 +40,7 @@ export default function Navbar({ onTabChange, courseName }) {
         <Button onClick={handleCourseClick} sx={{ padding: 0, minWidth: 0 }}>
           <img src={Symbol} alt="Symbol" style={{ width: '30px', height: 'auto' }} />
         </Button>
-        <Button variant="text" sx={{ fontWeight: 'bold' }} onClick={handleCourseClick}>
+        <Button variant="text" disabled sx={{ fontWeight: 'bold' , cursor: 'pointer'}}>
           {courseName}
         </Button>
       </Box>
