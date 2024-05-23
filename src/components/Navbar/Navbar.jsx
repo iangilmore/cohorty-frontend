@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Button, Box, IconButton } from '@mui/material';
-import Symbol from "../../assets/cohortyLogo.png";
+import { Button, Box, IconButton, Typography } from '@mui/material';
 import Logo from '../../assets/cohortySymbol.png'
 import { useLocation, useNavigate } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -36,34 +35,46 @@ export default function Navbar({ onTabChange, courseName, courseId }) {
       boxSizing='border-box'
       boxShadow={3}
       bgcolor="background.paper"
+      position="relative"
     >
       <Box display="flex" alignItems="center">
         <Button onClick={handleCourseClick} sx={{ padding: 0, minWidth: 0 }}>
           <img src={Logo} alt="Logo" style={{ width: '50px', height: 'auto' }} />
         </Button>
-        <Button variant="text" disabled sx={{ fontWeight: 'bold' , cursor: 'pointer'}}>
-          {courseName}
-        </Button>
       </Box>
 
-      {showTabs && (
-        <Box display="flex" gap={2} justifyContent="center" flexGrow={1}> 
-          <Button 
-            variant="text" 
-            sx={{ fontWeight: activeTabState === 'students' ? 'bold' : 'normal' }}
-            onClick={() => handleTabChange('students')}
-          >
-            Students
-          </Button>
-          <Button 
-            variant="text" 
-            sx={{ fontWeight: activeTabState === 'assignments' ? 'bold' : 'normal' }}
-            onClick={() => handleTabChange('assignments')}
-          >
-            Assignments
-          </Button>
-        </Box>
-      )}
+      <Box position="absolute" left="60px">
+        <Typography 
+          variant="h6"
+          sx={{ 
+            fontWeight: 'bold',
+            color: 'red',  // Change the color to red
+          }}
+        >
+          {courseName}
+        </Typography>
+      </Box>
+
+      <Box display="flex" justifyContent="center" flexGrow={1}>
+        {showTabs && (
+          <Box display="flex" gap={2}>
+            <Button 
+              variant="text" 
+              sx={{ fontWeight: activeTabState === 'students' ? 'bold' : 'normal' }}
+              onClick={() => handleTabChange('students')}
+            >
+              Students
+            </Button>
+            <Button 
+              variant="text" 
+              sx={{ fontWeight: activeTabState === 'assignments' ? 'bold' : 'normal' }}
+              onClick={() => handleTabChange('assignments')}
+            >
+              Assignments
+            </Button>
+          </Box>
+        )}
+      </Box>
 
       <Box>
         <IconButton onClick={handleLogout} sx={{ color: 'red' }}>
