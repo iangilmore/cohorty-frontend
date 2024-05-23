@@ -1,17 +1,19 @@
-// import { useState } from 'react';
+// import React, { useState, useEffect } from 'react';
 // import { Typography, IconButton, Grid, Container, Box, Modal, TextField, Button, List, ListItem, ListItemText, ListItemSecondaryAction } from '@mui/material';
 // import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 // import DeleteIcon from '@mui/icons-material/Delete';
+// import { useParams } from 'react-router-dom';
+// import { getStudentDetails, updateStudentDetails } from '../../services/students.js'; // Adjust the import according to your folder structure
 
 // function DateItem({ date, onDelete }) {
-//   const [showActions, setShowActions] = useState(false);  // State to control visibility of actions
+//   const [showActions, setShowActions] = useState(false);
 
 //   const handleDelete = () => {
 //     onDelete();
 //   };
 
 //   const toggleActions = () => {
-//     setShowActions(!showActions);  // Toggle visibility of actions
+//     setShowActions(!showActions);
 //   };
 
 //   return (
@@ -29,14 +31,22 @@
 // }
 
 // const monthNames = ["January", "February", "March", "April", "May", "June",
-// "July", "August", "September", "October", "November", "December"
+//   "July", "August", "September", "October", "November", "December"
 // ];
 
 // const formatDateForDisplay = (isoDateString) => {
-//   const date = new Date(isoDateString + 'T00:00:00'); // Force the date to be at midnight local time
+//   const date = new Date(isoDateString + 'T00:00:00');
 //   const monthName = monthNames[date.getMonth()];
 //   const day = date.getDate();
 //   return `${monthName} ${day}`;
+// };
+
+// const formatDateForBackend = (isoDateString) => {
+//   const date = new Date(isoDateString + 'T00:00:00');
+//   const year = date.getFullYear();
+//   const month = ('0' + (date.getMonth() + 1)).slice(-2);
+//   const day = ('0' + date.getDate()).slice(-2);
+//   return `${year}-${month}-${day}`;
 // };
 
 // const sortDates = (dates) => {
@@ -44,12 +54,33 @@
 // };
 
 // function Attendance() {
+//   const { courseId, studentId } = useParams();
 //   const [open, setOpen] = useState(false);
 //   const [modalTitle, setModalTitle] = useState("");
 //   const [newDate, setNewDate] = useState("");
 //   const [absences, setAbsences] = useState([]);
 //   const [tardies, setTardies] = useState([]);
-  
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
+
+//   useEffect(() => {
+//     const fetchStudentDetails = async () => {
+//       try {
+//         const studentData = await getStudentDetails(courseId, studentId);
+//         const formattedAbsences = studentData.attendance.filter(a => a.status === 'Absent').map(a => formatDateForDisplay(a.date));
+//         const formattedTardies = studentData.attendance.filter(a => a.status === 'Late').map(a => formatDateForDisplay(a.date));
+//         setAbsences(sortDates(formattedAbsences));
+//         setTardies(sortDates(formattedTardies));
+//       } catch (error) {
+//         setError(error.message);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchStudentDetails();
+//   }, [courseId, studentId]);
+
 //   const handleOpen = (title) => {
 //     setOpen(true);
 //     setModalTitle(title);
@@ -58,15 +89,39 @@
 
 //   const handleClose = () => setOpen(false);
 
-//   const handleAddDate = () => {
-//     const formattedDate = formatDateForDisplay(newDate);
+//   const handleAddDate = async () => {
+//     const formattedDate = formatDateForBackend(newDate);
+//     let newAttendance = [];
+
 //     if (modalTitle === "Add New Absence") {
 //       const updatedAbsences = [...absences, formattedDate];
 //       setAbsences(sortDates(updatedAbsences));
+//       newAttendance = [
+//         ...updatedAbsences.map(date => ({ date: formatDateForBackend(date), status: 'Absent' })),
+//         ...tardies.map(date => ({ date: formatDateForBackend(date), status: 'Late' }))
+//       ];
 //     } else {
 //       const updatedTardies = [...tardies, formattedDate];
 //       setTardies(sortDates(updatedTardies));
+//       newAttendance = [
+//         ...absences.map(date => ({ date: formatDateForBackend(date), status: 'Absent' })),
+//         ...updatedTardies.map(date => ({ date: formatDateForBackend(date), status: 'Late' }))
+//       ];
 //     }
+
+//     try {
+//       const studentData = await getStudentDetails(courseId, studentId);
+//       const existingAttendance = studentData.attendance.map(att => ({
+//         date: formatDateForBackend(att.date),
+//         status: att.status
+//       }));
+//       newAttendance = [...existingAttendance, ...newAttendance];
+
+//       await updateStudentDetails(courseId, studentId, { attendance: newAttendance });
+//     } catch (error) {
+//       setError(error.message);
+//     }
+
 //     handleClose();
 //   };
 
@@ -74,10 +129,38 @@
 //     setNewDate(event.target.value);
 //   };
 
-//   const handleDelete = (type, index) => {
-//     const updateList = type === "absences" ? [...absences] : [...tardies];
-//     updateList.splice(index, 1);
-//     type === "absences" ? setAbsences(updateList) : setTardies(updateList);
+//   const handleDelete = async (type, index) => {
+//     let updatedList, newAttendance;
+//     if (type === "absences") {
+//       updatedList = [...absences];
+//       updatedList.splice(index, 1);
+//       setAbsences(updatedList);
+//       newAttendance = [
+//         ...updatedList.map(date => ({ date: formatDateForBackend(date), status: 'Absent' })),
+//         ...tardies.map(date => ({ date: formatDateForBackend(date), status: 'Late' }))
+//       ];
+//     } else {
+//       updatedList = [...tardies];
+//       updatedList.splice(index, 1);
+//       setTardies(updatedList);
+//       newAttendance = [
+//         ...absences.map(date => ({ date: formatDateForBackend(date), status: 'Absent' })),
+//         ...updatedList.map(date => ({ date: formatDateForBackend(date), status: 'Late' }))
+//       ];
+//     }
+
+//     try {
+//       const studentData = await getStudentDetails(courseId, studentId);
+//       const existingAttendance = studentData.attendance.map(att => ({
+//         date: formatDateForBackend(att.date),
+//         status: att.status
+//       }));
+//       newAttendance = [...existingAttendance, ...newAttendance];
+
+//       await updateStudentDetails(courseId, studentId, { attendance: newAttendance });
+//     } catch (error) {
+//       setError(error.message);
+//     }
 //   };
 
 //   const style = {
@@ -92,6 +175,9 @@
 //     borderRadius: 2,
 //   };
 
+//   if (loading) return <p>Loading...</p>;
+//   if (error) return <p>Error: {error}</p>;
+
 //   return (
 //     <Container maxWidth="sm" sx={{ mt: 2, mb: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 //       <Box sx={{
@@ -104,9 +190,6 @@
 //         flexDirection: 'column',
 //         alignItems: 'center',
 //       }}>
-//         {/* <Typography variant="h6" sx={{ textAlign: 'center', mb: 2 }}>
-//           Attendance
-//         </Typography> */}
 //         <Grid container spacing={2} sx={{ width: '100%', justifyContent: 'center' }}>
 //           <Grid item xs={12} sm={6}>
 //             <Typography variant="h6" gutterBottom align="center">
@@ -180,12 +263,13 @@
 
 // export default Attendance;
 
+
 import React, { useState, useEffect } from 'react';
 import { Typography, IconButton, Grid, Container, Box, Modal, TextField, Button, List, ListItem, ListItemText, ListItemSecondaryAction } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useParams } from 'react-router-dom';
-import { getStudentDetails, updateStudentDetails } from '../../services/students.js'; // Adjust the import according to your folder structure
+import { getStudentDetails, updateStudentDetails } from '../../services/students.js';
 
 function DateItem({ date, onDelete }) {
   const [showActions, setShowActions] = useState(false);
@@ -299,7 +383,10 @@ function Attendance() {
       }));
       newAttendance = [...existingAttendance, ...newAttendance];
 
-      await updateStudentDetails(courseId, studentId, { attendance: newAttendance });
+      await updateStudentDetails(courseId, studentId, {
+        attendance: newAttendance,
+        submissions: studentData.submissions // Preserve existing submissions data
+      });
     } catch (error) {
       setError(error.message);
     }
@@ -339,7 +426,10 @@ function Attendance() {
       }));
       newAttendance = [...existingAttendance, ...newAttendance];
 
-      await updateStudentDetails(courseId, studentId, { attendance: newAttendance });
+      await updateStudentDetails(courseId, studentId, {
+        attendance: newAttendance,
+        submissions: studentData.submissions // Preserve existing submissions data
+      });
     } catch (error) {
       setError(error.message);
     }
@@ -396,7 +486,7 @@ function Attendance() {
               {tardies.map((date, index) => (
                 <DateItem key={index} date={date} onDelete={() => handleDelete('tardies', index)} />
               ))}
-            </List>
+            </List            >
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <IconButton color="primary" size="large" onClick={() => handleOpen("Add New Tardy")}>
                 <AddCircleOutlineIcon />
