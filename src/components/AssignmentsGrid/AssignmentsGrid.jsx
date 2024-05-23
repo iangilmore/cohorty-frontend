@@ -233,7 +233,7 @@ export default function AssignmentsGrid() {
   }, [courseId]);
 
   const handleNameClick = (assignmentId) => {
-    navigate(`/${courseId}/assignments/${assignmentId}`);
+    navigate(`/courses/${courseId}/assignments/${assignmentId}`);
   };
 
   const handleClickOpen = () => {
