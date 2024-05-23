@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Button, Box, IconButton, Typography } from '@mui/material';
 import Logo from '../../assets/cohortySymbol.png';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -6,11 +6,15 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { AuthContext } from '../../context/AuthContextComponent';
 import { logOut } from '../../services/users';
 
-export default function Navbar({ onTabChange, courseName, courseId }) {
+export default function Navbar({ activeTab, onTabChange, courseName, courseId }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { setIsUserLoggedIn } = useContext(AuthContext); // Use AuthContext to manage auth state
-  const [activeTabState, setActiveTabState] = useState(location.pathname.includes('assignments') ? 'assignments' : 'students');
+  const [activeTabState, setActiveTabState] = useState(activeTab);
+
+  useEffect(() => {
+    setActiveTabState(activeTab);
+  }, [activeTab]);
 
   const handleTabChange = (tab) => {
     setActiveTabState(tab);
