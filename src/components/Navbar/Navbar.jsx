@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button, Box, IconButton } from '@mui/material';
 import Symbol from "../../assets/cohortyLogo.png";
-// import Logo from '../../assets/cohortySymbol.png'
+import Logo from '../../assets/cohortySymbol.png'
 import { useLocation, useNavigate } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
 
@@ -39,7 +39,7 @@ export default function Navbar({ onTabChange, courseName, courseId }) {
     >
       <Box display="flex" alignItems="center">
         <Button onClick={handleCourseClick} sx={{ padding: 0, minWidth: 0 }}>
-          <img src={Symbol} alt="Symbol" style={{ width: '30px', height: 'auto' }} />
+          <img src={Logo} alt="Logo" style={{ width: '50px', height: 'auto' }} />
         </Button>
         <Button variant="text" disabled sx={{ fontWeight: 'bold' , cursor: 'pointer'}}>
           {courseName}
