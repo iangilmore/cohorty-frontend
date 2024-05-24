@@ -120,8 +120,8 @@ export default function AssignmentsGrid() {
         <Table aria-label="simple table" stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ color: 'white', bgcolor: '#242424' }}>Assignment</TableCell>
-              <TableCell sx={{ color: 'white', bgcolor: '#242424' }} align="right">Due Date</TableCell>
+              <TableCell sx={{ color: 'white', bgcolor: 'text.secondary' }}>Assignment</TableCell>
+              <TableCell sx={{ color: 'white', bgcolor: 'text.secondary' }} align="right">Due Date</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

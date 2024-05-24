@@ -74,9 +74,9 @@ export default function StudentTable() {
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell sx={{ position: 'sticky', top: 0, color: 'white', bgcolor: '#242424', zIndex: 100 }}>Student</TableCell>
-            <TableCell align="right" sx={{ position: 'sticky', top: 0, color: 'white', bgcolor: '#242424', zIndex: 100 }}>Assignment %</TableCell>
-            <TableCell align="right" sx={{ position: 'sticky', top: 0, color: 'white', bgcolor: '#242424', zIndex: 100 }}>Absences</TableCell>
+            <TableCell sx={{ position: 'sticky', top: 0, color: 'white', bgcolor: 'text.secondary', zIndex: 100 }}>Student</TableCell>
+            <TableCell align="right" sx={{ position: 'sticky', top: 0, color: 'white', bgcolor: 'text.secondary', zIndex: 100 }}>Assignment %</TableCell>
+            <TableCell align="right" sx={{ position: 'sticky', top: 0, color: 'white', bgcolor: 'text.secondary', zIndex: 100 }}>Absences</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
