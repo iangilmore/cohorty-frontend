@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -6,7 +6,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   Checkbox,
   Typography,
   Box
@@ -17,8 +16,6 @@ import { getAssignmentDetails, updateAssignmentDetails } from '../../services/as
 
 export default function SingleAssignmentGrid() {
   const { courseId, assignmentId } = useParams();
-
-  const [students, setStudents] = useState([]);
   const [assignments, setAssignments] = useState([]);
   const [assignmentData, setAssignmentData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -29,16 +26,10 @@ export default function SingleAssignmentGrid() {
       try {
         const courseDataArray = await getCourse(courseId);
         const assignmentDetails = await getAssignmentDetails(courseId, assignmentId);
-
-        console.log("Fetched assignment details:", assignmentDetails);
-
         const courseData = courseDataArray.find(course => course.id.toString() === courseId);
-
         if (!courseData) {
           throw new Error("Course not found");
         }
-
-        setStudents(courseData.students);
         setAssignmentData(assignmentDetails);
 
         const formattedAssignments = courseData.students.map(student => {
@@ -128,7 +119,7 @@ export default function SingleAssignmentGrid() {
 
   return (
     <Box sx={{ width: '100%', mt: 4, display: 'flex', justifyContent: 'center' }}>
-      <Box sx={{ maxWidth: 800, width: '100%', bgcolor: 'background.paper', p: 2, boxShadow: 3, borderRadius: 2 }}>
+      <Box sx={{ minWidth: 500, mx: "auto", bgcolor: 'background.paper', p: 4, boxShadow: 3, borderRadius: 2 }}>
         {assignmentData && (
           <>
             <Typography variant="h5" sx={{ mb: 2, textAlign: 'center' }}>
@@ -139,17 +130,17 @@ export default function SingleAssignmentGrid() {
             </Typography>
           </>
         )}
-        <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
-          <Table sx={{ minWidth: 650 }}>
+        <TableContainer sx={{ maxWidth: 650, mx: "auto" }}>
+          <Table sx={{ '& .MuiTableRow-root': { borderBottom: '2px solid #FFF' } }}>
             <TableHead>
               <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell align="center">Submitted</TableCell>
-                <TableCell align="center">Complete</TableCell>
+                <TableCell sx={{ color: 'white', bgcolor: 'text.secondary' }}>Name</TableCell>
+                <TableCell sx={{ color: 'white', bgcolor: 'text.secondary' }}align="center">Submitted</TableCell>
+                <TableCell sx={{ color: 'white', bgcolor: 'text.secondary' }}align="center">Complete</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {assignments.map((assignment, index) => (
+              {assignments.map((assignment) => (
                 <TableRow key={assignment.id} sx={{ bgcolor: assignment.complete ? '#c8e6c9' : assignment.submitted ? '#ffecb3' : '#ffcdd2' }}>
                   <TableCell>{assignment.name}</TableCell>
                   <TableCell align="center">
@@ -158,6 +149,7 @@ export default function SingleAssignmentGrid() {
                       onChange={() => handleCheckboxChange(assignment.id, 'submitted')}
                       color="primary"
                       disabled={assignment.complete}
+                      sx={{ padding: 0 }}
                     />
                   </TableCell>
                   <TableCell align="center">
@@ -165,6 +157,7 @@ export default function SingleAssignmentGrid() {
                       checked={assignment.complete}
                       onChange={() => handleCheckboxChange(assignment.id, 'complete')}
                       color="primary"
+                      sx={{ padding: 0 }}
                     />
                   </TableCell>
                 </TableRow>
