@@ -15,7 +15,8 @@ import {
   DialogContentText,
   DialogTitle,
   TextField,
-  Pagination
+  Pagination,
+  Typography
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getCourse } from '../../services/courses.js';
@@ -117,6 +118,10 @@ export default function AssignmentsGrid() {
   return (
     <Box sx={{ minWidth: 500, mx: "auto", minHeight: '445px' }}>
       <TableContainer sx={{ maxWidth: 650, mx: "auto", maxHeight: '70vh', overflowY: 'auto' }}>
+        <Typography variant="h4" sx={{ textAlign: 'center', mb: 2 }}>
+          Assigments
+        </Typography>
+
         <Table aria-label="simple table" stickyHeader>
           <TableHead>
             <TableRow>
@@ -140,17 +145,16 @@ export default function AssignmentsGrid() {
             ))}
           </TableBody>
         </Table>
-        <TableFooter>
-          <TableRow>
-        <Pagination
-                count={Math.ceil(assignments.length / assignmentsPerPage)}
-                page={page}
-                onChange={handlePageChange}
-                sx={{ m: 2 }}
-              />              
-          </TableRow>
-        </TableFooter>
       </TableContainer>
+
+      <Box display="flex" justifyContent="center">
+        <Pagination
+          count={Math.ceil(assignments.length / assignmentsPerPage)}
+          page={page}
+          onChange={handlePageChange}
+          sx={{ m: 2 }}
+        />
+      </Box>
 
       <Box display="flex" justifyContent="center" mt={2}>
         <Button variant="contained" color="primary" onClick={handleClickOpen}>
