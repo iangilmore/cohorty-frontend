@@ -32,7 +32,8 @@ const Course = ({ activeTab }) => {
     <Box
       sx={{
         width: '100%',
-        height: '100vh',
+        height: 'calc(100vh - 60px)', // Adjust height to account for Navbar
+        marginTop: '60px', // Margin to avoid overlap with fixed Navbar
         backgroundImage: 'url(https://images.pexels.com/photos/7092515/pexels-photo-7092515.jpeg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',

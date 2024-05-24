@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Box, IconButton, Typography } from '@mui/material';
-import Logo from '../../assets/cohortySymbol.png'
+import Logo from '../../assets/cohortySymbol.png';
 import { useLocation, useNavigate } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
 
@@ -8,6 +8,14 @@ export default function Navbar({ onTabChange, courseName, courseId }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [activeTabState, setActiveTabState] = useState(location.pathname.includes('assignments') ? 'assignments' : 'students');
+
+  useEffect(() => {
+    if (location.pathname.includes('students')) {
+      setActiveTabState('students');
+    } else if (location.pathname.includes('assignments')) {
+      setActiveTabState('assignments');
+    }
+  }, [location.pathname]);
 
   const handleTabChange = (tab) => {
     setActiveTabState(tab);
@@ -35,7 +43,10 @@ export default function Navbar({ onTabChange, courseName, courseId }) {
       boxSizing='border-box'
       boxShadow={3}
       bgcolor="background.paper"
-      position="relative"
+      position="fixed"
+      top={0}
+      zIndex={1000}
+      height="60px"  // Fixed height
     >
       <Box display="flex" alignItems="center">
         <Button onClick={handleCourseClick} sx={{ padding: 0, minWidth: 0 }}>

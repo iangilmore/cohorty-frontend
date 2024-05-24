@@ -177,7 +177,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  TextField
+  TextField,
+  Pagination
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getCourse } from '../../services/courses.js';
@@ -189,6 +190,8 @@ export default function AssignmentsGrid() {
   const [error, setError] = useState(null);
   const [open, setOpen] = useState(false);
   const [newAssignment, setNewAssignment] = useState({ name: '', dueDate: '' });
+  const [page, setPage] = useState(1);
+  const [assignmentsPerPage] = useState(5); // Adjust the number of assignments per page
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -259,11 +262,26 @@ export default function AssignmentsGrid() {
     // }
   };
 
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+
+  // Logic for displaying current assignments
+  const indexOfLastAssignment = page * assignmentsPerPage;
+  const indexOfFirstAssignment = indexOfLastAssignment - assignmentsPerPage;
+  const currentAssignments = assignments.slice(indexOfFirstAssignment, indexOfLastAssignment);
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+    <Box 
+      display="flex" 
+      flexDirection="column" 
+      justifyContent="center" 
+      alignItems="center"
+      sx={{ marginTop: '80px' }} // Add margin top to separate from Navbar
+    >
       <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{ mb: 2 }}>
         Add Assignment
       </Button>
@@ -276,7 +294,7 @@ export default function AssignmentsGrid() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {assignments.map((assignment, index) => (
+            {currentAssignments.map((assignment, index) => (
               <TableRow key={assignment.id} sx={{ bgcolor: index % 2 === 0 ? '#e0f7fa' : '#f0f0f0' }}>
                 <TableCell component="th" scope="row">
                   <Button
@@ -292,6 +310,12 @@ export default function AssignmentsGrid() {
           </TableBody>
         </Table>
       </TableContainer>
+      <Pagination 
+        count={Math.ceil(assignments.length / assignmentsPerPage)} 
+        page={page} 
+        onChange={handlePageChange} 
+        sx={{ mt: 2 }} 
+      />
 
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add New Assignment</DialogTitle>
@@ -334,5 +358,7 @@ export default function AssignmentsGrid() {
     </Box>
   );
 }
+
+
 
 
