@@ -43,7 +43,6 @@ const Course = ({ activeTab }) => {
       }}
     >
       <Paper elevation={3} sx={{
-        // width: '100%', // Full width to accommodate space
         maxWidth: 800, // Keeps the content width controlled
         bgcolor: 'background.paper',
         p: 1,

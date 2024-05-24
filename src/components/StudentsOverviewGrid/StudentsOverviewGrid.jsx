@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Box, Button } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Box, Button, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getCourse } from '../../services/courses.js';
 
@@ -18,7 +18,7 @@ export default function StudentTable() {
 
         // Since data is an array, find the correct object by courseId
         const courseData = data.find(course => course.id.toString() === courseId);
-        
+
         if (courseData && courseData.students) {
           const studentsArray = courseData.students;
           console.log('studentsArray:', studentsArray);
@@ -46,7 +46,7 @@ export default function StudentTable() {
   }, [courseId]);
 
   const handleNameClick = (studentId, studentName) => {
-    navigate(`/courses/${courseId}/students/${studentId}`, { state: { studentName } } );
+    navigate(`/courses/${courseId}/students/${studentId}`, { state: { studentName } });
   };
 
   const getRowStyle = (assignmentPercentage, absences) => {
@@ -69,34 +69,37 @@ export default function StudentTable() {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <Box sx={{ minWidth: 500, mx: "auto"}}>
-    <TableContainer sx={{ maxWidth: 650, mx: "auto" }}>
-      <Table sx={{ '& .MuiTableRow-root': { borderBottom: '2px solid #FFF' } }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ position: 'sticky', top: 0, color: 'white', bgcolor: 'text.secondary', zIndex: 100 }}>Student</TableCell>
-            <TableCell align="right" sx={{ position: 'sticky', top: 0, color: 'white', bgcolor: 'text.secondary', zIndex: 100 }}>Assignment %</TableCell>
-            <TableCell align="right" sx={{ position: 'sticky', top: 0, color: 'white', bgcolor: 'text.secondary', zIndex: 100 }}>Absences</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {students.map((student) => (
-            <TableRow key={student.id} sx={getRowStyle(student.assignment_percentage, student.absences)}>
-              <TableCell component="th" scope="row">
-                <Button
-                  onClick={() => handleNameClick(student.id, student.name)}
-                  sx={{ textTransform: 'none', justifyContent: 'flex-start', color: 'inherit', padding: 0, minWidth: 'auto' }}
-                >
-                  {student.name}
-                </Button>
-              </TableCell>
-              <TableCell align="right">{student.assignment_percentage}</TableCell>
-              <TableCell align="right">{student.absences}</TableCell>
+    <Box sx={{ minWidth: 500, mx: "auto" }}>
+      <Typography variant="h4" sx={{ textAlign: 'center', mb: 2 }}>
+        Students
+      </Typography>
+      <TableContainer sx={{ maxWidth: 650, mx: "auto" }}>
+        <Table sx={{ '& .MuiTableRow-root': { borderBottom: '2px solid #FFF' } }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ position: 'sticky', top: 0, color: 'white', bgcolor: 'text.secondary', zIndex: 100 }}>Student</TableCell>
+              <TableCell align="right" sx={{ position: 'sticky', top: 0, color: 'white', bgcolor: 'text.secondary', zIndex: 100 }}>Assignment %</TableCell>
+              <TableCell align="right" sx={{ position: 'sticky', top: 0, color: 'white', bgcolor: 'text.secondary', zIndex: 100 }}>Absences</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {students.map((student) => (
+              <TableRow key={student.id} sx={getRowStyle(student.assignment_percentage, student.absences)}>
+                <TableCell component="th" scope="row">
+                  <Button
+                    onClick={() => handleNameClick(student.id, student.name)}
+                    sx={{ textTransform: 'none', justifyContent: 'flex-start', color: 'inherit', padding: 0, minWidth: 'auto' }}
+                  >
+                    {student.name}
+                  </Button>
+                </TableCell>
+                <TableCell align="right">{student.assignment_percentage}</TableCell>
+                <TableCell align="right">{student.absences}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Box>
   );
 }
