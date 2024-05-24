@@ -101,8 +101,8 @@ export default function Navbar({ activeTab, onTabChange, courseName, courseId })
       </Box>
 
       <Box>
-        <IconButton onClick={handleLogout} sx={{ color: 'red' }}>
-          <LogoutIcon />
+      <IconButton onClick={handleLogout} sx={{ color: 'red', width: '30px', height: 'auto' }}>
+          <LogoutIcon sx={{ fontSize: '34px' }} />
         </IconButton>
       </Box>
     </Box>

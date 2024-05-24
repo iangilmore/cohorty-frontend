@@ -30,7 +30,7 @@ export default function AssignmentsGrid() {
   const [open, setOpen] = useState(false);
   const [newAssignment, setNewAssignment] = useState({ name: '', dueDate: '' });
   const [page, setPage] = useState(1);
-  const [assignmentsPerPage] = useState(5); // Adjust the number of assignments per page
+  const [assignmentsPerPage] = useState(6); // Adjust the number of assignments per page
   const navigate = useNavigate();
 
   useEffect(() => {
