@@ -102,7 +102,7 @@
 // }
 
 import { useState, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box, Pagination } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getCourse } from '../../services/courses.js';
 
@@ -113,6 +113,8 @@ export default function StudentTable() {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const [studentsPerPage] = useState(6); // Adjust the number of students per page
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -170,36 +172,55 @@ export default function StudentTable() {
     return {};
   };
 
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+
+  // Logic for displaying current students
+  const indexOfLastStudent = page * studentsPerPage;
+  const indexOfFirstStudent = indexOfLastStudent - studentsPerPage;
+  const currentStudents = students.slice(indexOfFirstStudent, indexOfLastStudent);
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <TableContainer component={Paper} sx={{ maxWidth: 650, mx: "auto" }}>
-      <Table aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Student</TableCell>
-            <TableCell align="right" sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Assignment %</TableCell>
-            <TableCell align="right" sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Absences</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {students.map((student) => (
-            <TableRow key={student.id} sx={getRowStyle(student.assignment_percentage, student.absences)}>
-              <TableCell component="th" scope="row">
-                <Button
-                  onClick={() => handleNameClick(student.id, student.name)}
-                  sx={{ textTransform: 'none', justifyContent: 'flex-start', color: 'inherit', padding: 0, minWidth: 'auto' }}
-                >
-                  {student.name}
-                </Button>
-              </TableCell>
-              <TableCell align="right">{student.assignment_percentage}</TableCell>
-              <TableCell align="right">{student.absences}</TableCell>
+    <Box sx={{ maxWidth: 650, mx: "auto", minHeight: '500px' }}>
+      <TableContainer component={Paper} sx={{ maxHeight: '70vh', overflowY: 'auto' }}>
+        <Table aria-label="simple table" stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Student</TableCell>
+              <TableCell align="right" sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Assignment %</TableCell>
+              <TableCell align="right" sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Absences</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {currentStudents.map((student) => (
+              <TableRow key={student.id} sx={getRowStyle(student.assignment_percentage, student.absences)}>
+                <TableCell component="th" scope="row">
+                  <Button
+                    onClick={() => handleNameClick(student.id, student.name)}
+                    sx={{ textTransform: 'none', justifyContent: 'flex-start', color: 'inherit', padding: 0, minWidth: 'auto' }}
+                  >
+                    {student.name}
+                  </Button>
+                </TableCell>
+                <TableCell align="right">{student.assignment_percentage}</TableCell>
+                <TableCell align="right">{student.absences}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Box display="flex" justifyContent="center" sx={{ mt: 2 }}>
+        <Pagination 
+          count={Math.ceil(students.length / studentsPerPage)} 
+          page={page} 
+          onChange={handlePageChange} 
+        />
+      </Box>
+    </Box>
   );
 }
+

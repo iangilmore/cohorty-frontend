@@ -198,7 +198,7 @@ export default function AssignmentsGrid() {
   const [open, setOpen] = useState(false);
   const [newAssignment, setNewAssignment] = useState({ name: '', dueDate: '' });
   const [page, setPage] = useState(1);
-  const [assignmentsPerPage] = useState(5); // Adjust the number of assignments per page
+  const [assignmentsPerPage] = useState(6); // Adjust the number of assignments per page
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -276,7 +276,7 @@ export default function AssignmentsGrid() {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <Box component={Paper} sx={{ maxWidth: 650, mx: "auto", minHeight: '500px' }}>
+    <Box component={Paper} sx={{ maxWidth: 650, mx: "auto", minHeight: '505px' }}>
       <Box display="flex" justifyContent="center">
         <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{ mb: 2 }}>
           Add Assignment
