@@ -7,7 +7,7 @@ const CourseItem = ({ course, handleClick }) => {
     <Card 
       onClick={() => handleClick(course.id, course.name)}
       sx={{
-        height: 100,
+        height: 150, // Increased height for larger boxes
         minWidth: 275,
         marginRight: 10,
         marginLeft: 10,
@@ -19,11 +19,12 @@ const CourseItem = ({ course, handleClick }) => {
         justifyContent: 'center',
         cursor: 'pointer',
         bgcolor: '#d4e8fc', // Light blue background color
-        color: '#1a1a1a'    // Dark text color
+        color: '#1a1a1a',   // Dark text color
+        padding: 2,         // Added padding
       }}
     >
       <CardContent>
-        <Typography variant="h5" component="div">
+        <Typography variant="h4" component="div"> {/* Changed variant to h4 for larger text */}
           {course.name}
         </Typography>
       </CardContent>

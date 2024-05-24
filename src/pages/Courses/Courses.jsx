@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getCourses } from '../../services/courses.js';
 import CourseItem from '../../components/CourseItem/CourseItem.jsx';
-// import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,7 +19,7 @@ const Courses = ({ setCourseId, setCourseName }) => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const fetchedCourses = await getCourses(); 
+        const fetchedCourses = await getCourses();
 
         // Sort courses by name (assuming name contains chronological order)
         fetchedCourses.sort((a, b) => a.name.localeCompare(b.name));
@@ -44,7 +43,8 @@ const Courses = ({ setCourseId, setCourseName }) => {
     <Box
       sx={{
         width: '100%',
-        height: '100vh', // This will make sure the background covers the full view height
+        height: 'calc(100vh - 60px)', // Adjust height to account for Navbar
+        marginTop: '60px', // Margin to avoid overlap with fixed Navbar
         backgroundImage: 'url(https://images.pexels.com/photos/1438072/pexels-photo-1438072.jpeg)', // Update with your direct image URL
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -64,7 +64,7 @@ const Courses = ({ setCourseId, setCourseName }) => {
           }}
         >
           {courses.map((course) => (
-            <CourseItem key={course.id} course={course} handleClick={handleClick}/>
+            <CourseItem key={course.id} course={course} handleClick={handleClick} />
           ))}
         </Box>
       </div>
