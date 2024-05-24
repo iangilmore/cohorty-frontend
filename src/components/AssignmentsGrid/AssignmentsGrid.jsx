@@ -24,6 +24,7 @@ import { addAssignmentToCourse } from '../../services/assignments.js';
 export default function AssignmentsGrid() {
   const { courseId } = useParams();
   const [assignments, setAssignments] = useState([]);
+  console.log('assignments:', assignments);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [open, setOpen] = useState(false);
@@ -83,7 +84,12 @@ export default function AssignmentsGrid() {
       };
       console.log('Sending new assignment data:', newAssignmentData);
       const data = await addAssignmentToCourse(courseId, newAssignmentData);
-      setAssignments((prev) => [...prev, data]);
+      const formattedData = {
+        id: data.id,
+        name: data.name,
+        dueDate: data.due_date
+      }
+      setAssignments((prev) => [...prev, formattedData]);
       handleClose();
     } catch (error) {
       console.error("Error adding assignment:", error.response ? error.response.data : error.message);
