@@ -1,13 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Button, Box, IconButton, Typography } from '@mui/material';
 import Logo from '../../assets/cohortySymbol.png';
 import { useLocation, useNavigate } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { AuthContext } from '../../context/AuthContextComponent';
+import { logOut } from '../../services/users';
 
-export default function Navbar({ onTabChange, courseName, courseId }) {
+export default function Navbar({ activeTab, onTabChange, courseName, courseId }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const [activeTabState, setActiveTabState] = useState(location.pathname.includes('assignments') ? 'assignments' : 'students');
+  const { setIsUserLoggedIn } = useContext(AuthContext); // Use AuthContext to manage auth state
+  const [activeTabState, setActiveTabState] = useState(activeTab);
+
+  useEffect(() => {
+    setActiveTabState(activeTab);
+  }, [activeTab]);
 
   useEffect(() => {
     if (location.pathname.includes('students')) {
@@ -27,8 +34,14 @@ export default function Navbar({ onTabChange, courseName, courseId }) {
     navigate('/courses');
   };
 
-  const handleLogout = () => {
-    // Add your logout logic here
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      setIsUserLoggedIn(false);
+      navigate('/');
+    } catch (error) {
+      console.error('Failed to log out:', error);
+    }
   };
 
   const showTabs = location.pathname !== '/courses';

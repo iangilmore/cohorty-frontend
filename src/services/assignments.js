@@ -1,11 +1,11 @@
 import api from "./apiConfig.js";
 
-
-export const addAssignmentToCourse = async (courseId) => {
+export const addAssignmentToCourse = async (courseId, assignmentData) => {
   try {
-    const response = await api.post(`/courses/${courseId}/assignments/`);
+    const response = await api.post(`/courses/${courseId}/assignments/`, assignmentData);
     return response.data;
   } catch (error) {
+    console.error('Error in addAssignmentToCourse:', error.response ? error.response.data : error.message);
     throw error;
   }
 };

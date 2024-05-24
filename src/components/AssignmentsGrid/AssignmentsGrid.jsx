@@ -16,10 +16,12 @@
 //   DialogTitle,
 //   TextField
 // } from '@mui/material';
-// import { useNavigate } from 'react-router-dom';
-// import { getCourse } from '../../services/courses.js'; 
+// import { useNavigate, useParams } from 'react-router-dom';
+// import { getCourse } from '../../services/courses.js';
+// import { addAssignmentToCourse } from '../../services/assignments.js';
 
-// export default function AssignmentsGrid({ courseId }) {
+// export default function AssignmentsGrid() {
+//   const { courseId } = useParams();
 //   const [assignments, setAssignments] = useState([]);
 //   const [loading, setLoading] = useState(true);
 //   const [error, setError] = useState(null);
@@ -31,13 +33,22 @@
 //     const fetchAssignments = async () => {
 //       try {
 //         const data = await getCourse(courseId);
-//         const formattedAssignments = data.assignments.map(assignment => ({
-//           id: assignment.id,
-//           name: assignment.name,
-//           dueDate: assignment.dueDate
-//         }));
-//         setAssignments(formattedAssignments);
+//         console.log('API response data:', data);
+
+//         const courseData = data.find(course => course.id.toString() === courseId);
+
+//         if (courseData && courseData.assignments) {
+//           const formattedAssignments = courseData.assignments.map(assignment => ({
+//             id: assignment.id,
+//             name: assignment.name,
+//             dueDate: assignment.due_date
+//           }));
+//           setAssignments(formattedAssignments);
+//         } else {
+//           throw new Error("Course not found or unexpected API response structure");
+//         }
 //       } catch (error) {
+//         console.error('Error fetching assignments:', error);
 //         setError(error.message);
 //       } finally {
 //         setLoading(false);
@@ -48,7 +59,7 @@
 //   }, [courseId]);
 
 //   const handleNameClick = (assignmentId) => {
-//     navigate(`/${courseId}/assignments/${assignmentId}`);
+//     navigate(`/courses/${courseId}/assignments/${assignmentId}`);
 //   };
 
 //   const handleClickOpen = () => {
@@ -65,29 +76,24 @@
 //   };
 
 //   const handleAddAssignment = async () => {
-//     // Mock data addition for now
-//     const newId = assignments.length + 1;
-//     const newAssignmentData = {
-//       id: newId,
-//       name: newAssignment.name,
-//       dueDate: new Date(newAssignment.dueDate).toLocaleDateString()
-//     };
-//     setAssignments((prev) => [...prev, newAssignmentData]);
-//     handleClose();
-
-//     // Uncomment below when API is ready
-//     // try {
-//     //   const data = await addAssignmentToCourse(courseId, newAssignment);
-//     //   setAssignments((prev) => [...prev, data]);
-//     //   handleClose();
-//     // } catch (error) {
-//     //   console.error("Error adding assignment:", error);
-//     // }
+//     try {
+//       const newAssignmentData = {
+//         name: newAssignment.name,
+//         due_date: newAssignment.dueDate, // Ensure this is in YYYY-MM-DD format
+//       };
+//       console.log('Sending new assignment data:', newAssignmentData);
+//       const data = await addAssignmentToCourse(courseId, newAssignmentData);
+//       setAssignments((prev) => [...prev, data]);
+//       handleClose();
+//     } catch (error) {
+//       console.error("Error adding assignment:", error.response ? error.response.data : error.message);
+//       setError(error.message);
+//     }
 //   };
 
 //   if (loading) return <p>Loading...</p>;
 //   if (error) return <p>Error: {error}</p>;
-
+  
 //   return (
 //     <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
 //       <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{ mb: 2 }}>
@@ -157,7 +163,7 @@
 //           </Button>
 //         </DialogActions>
 //       </Dialog>
-//       </Box>
+//     </Box>
 //   );
 // }
 
@@ -182,6 +188,7 @@ import {
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getCourse } from '../../services/courses.js';
+import { addAssignmentToCourse } from '../../services/assignments.js';
 
 export default function AssignmentsGrid() {
   const { courseId } = useParams();
@@ -200,7 +207,6 @@ export default function AssignmentsGrid() {
         const data = await getCourse(courseId);
         console.log('API response data:', data);
 
-        // Since data is an array, find the correct object by courseId
         const courseData = data.find(course => course.id.toString() === courseId);
 
         if (courseData && courseData.assignments) {
@@ -225,7 +231,7 @@ export default function AssignmentsGrid() {
   }, [courseId]);
 
   const handleNameClick = (assignmentId) => {
-    navigate(`/${courseId}/assignments/${assignmentId}`);
+    navigate(`/courses/${courseId}/assignments/${assignmentId}`);
   };
 
   const handleClickOpen = () => {
@@ -242,24 +248,19 @@ export default function AssignmentsGrid() {
   };
 
   const handleAddAssignment = async () => {
-    // Mock data addition for now
-    const newId = assignments.length + 1;
-    const newAssignmentData = {
-      id: newId,
-      name: newAssignment.name,
-      dueDate: new Date(newAssignment.dueDate).toLocaleDateString()
-    };
-    setAssignments((prev) => [...prev, newAssignmentData]);
-    handleClose();
-
-    // Uncomment below when API is ready
-    // try {
-    //   const data = await addAssignmentToCourse(courseId, newAssignment);
-    //   setAssignments((prev) => [...prev, data]);
-    //   handleClose();
-    // } catch (error) {
-    //   console.error("Error adding assignment:", error);
-    // }
+    try {
+      const newAssignmentData = {
+        name: newAssignment.name,
+        due_date: newAssignment.dueDate, // Ensure this is in YYYY-MM-DD format
+      };
+      console.log('Sending new assignment data:', newAssignmentData);
+      const data = await addAssignmentToCourse(courseId, newAssignmentData);
+      setAssignments((prev) => [...prev, data]);
+      handleClose();
+    } catch (error) {
+      console.error("Error adding assignment:", error.response ? error.response.data : error.message);
+      setError(error.message);
+    }
   };
 
   const handlePageChange = (event, value) => {
@@ -275,22 +276,17 @@ export default function AssignmentsGrid() {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <Box 
-      display="flex" 
-      flexDirection="column" 
-      justifyContent="center" 
-      alignItems="center"
-      sx={{ marginTop: '80px' }} // Add margin top to separate from Navbar
-    >
+    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" height="100vh" overflow="hidden">
+
       <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{ mb: 2 }}>
         Add Assignment
       </Button>
-      <TableContainer component={Paper} sx={{ maxWidth: 650, mx: "auto" }}>
-        <Table aria-label="simple table">
+      <TableContainer component={Paper} sx={{ maxWidth: 650, mx: "auto", maxHeight: '70vh', overflowY: 'auto' }}>
+        <Table aria-label="simple table" stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Assignment</TableCell>
-              <TableCell align="right" sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Due Date</TableCell>
+              <TableCell sx={{ backgroundColor: 'white', zIndex: 100 }}>Assignment</TableCell>
+              <TableCell align="right" sx={{ backgroundColor: 'white', zIndex: 100 }}>Due Date</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
