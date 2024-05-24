@@ -535,7 +535,7 @@
 
 // export default Attendance;
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Typography, IconButton, Grid, Container, Box, Modal, TextField, Button, List, ListItem, ListItemText, ListItemSecondaryAction } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -724,7 +724,7 @@ function Attendance() {
   return (
     <Container maxWidth="sm" sx={{ mt: 2, mb: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '430px' }}>
       <Box sx={{
-        bgcolor: 'pink',
+        bgcolor: '#E5E4E2',
         width: '100%',
         p: 2,
         boxShadow: 3,
