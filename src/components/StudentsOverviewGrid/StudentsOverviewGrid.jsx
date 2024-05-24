@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box, Pagination } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Box, Pagination, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getCourse } from '../../services/courses.js';
 
@@ -80,14 +80,23 @@ export default function StudentTable() {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <Box sx={{ maxWidth: 650, mx: "auto", minHeight: '500px' }}>
-      <TableContainer component={Paper} sx={{ maxHeight: '70vh', overflowY: 'auto' }}>
-        <Table aria-label="simple table" stickyHeader>
+    <Box sx={{ minWidth: 500, mx: "auto" }}>
+      <Typography variant="h4" sx={{ textAlign: 'center', mb: 2 }}>
+        Students
+      </Typography>
+      <TableContainer sx={{ maxWidth: 650, mx: "auto" }}>
+        <Table sx={{ '& .MuiTableRow-root': { borderBottom: '2px solid #FFF' } }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Student</TableCell>
-              <TableCell align="right" sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Assignment %</TableCell>
-              <TableCell align="right" sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 100 }}>Absences</TableCell>
+              <TableCell sx={{ position: 'sticky', top: 0, color: 'white', bgcolor: 'text.secondary', zIndex: 100 }}>
+                Student
+              </TableCell>
+              <TableCell align="right" sx={{ position: 'sticky', top: 0, color: 'white', bgcolor: 'text.secondary', zIndex: 100 }}>
+                Assignment %
+              </TableCell>
+              <TableCell align="right" sx={{ position: 'sticky', top: 0, color: 'white', bgcolor: 'text.secondary', zIndex: 100 }}>
+                Absences
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -109,10 +118,10 @@ export default function StudentTable() {
         </Table>
       </TableContainer>
       <Box display="flex" justifyContent="center" sx={{ mt: 2 }}>
-        <Pagination 
-          count={Math.ceil(students.length / studentsPerPage)} 
-          page={page} 
-          onChange={handlePageChange} 
+        <Pagination
+          count={Math.ceil(students.length / studentsPerPage)}
+          page={page}
+          onChange={handlePageChange}
         />
       </Box>
     </Box>
