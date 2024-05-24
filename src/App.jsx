@@ -9,6 +9,7 @@ import Courses from './pages/Courses/Courses.jsx';
 import Login from './pages/Login/Login.jsx';
 import Student from './pages/Student/Student.jsx';
 import Navbar from './components/Navbar/Navbar.jsx';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute.jsx'
 
 // context
 function App() {
@@ -42,18 +43,33 @@ function App() {
       )}
       <Routes>
         <Route path="/" element={<Login />} />
-        {
-          isUserLoggedIn && 
-          <>
-            <Route path="/courses" element={<Courses setCourseId={setCourseId} setCourseName={setCourseName}/>} />
-            <Route path="courses/:courseId/students" element={<Course activeTab="students" />} />
-            <Route path="courses/:courseId/assignments" element={<Course activeTab="assignments" />} />
-            <Route path="courses/:courseId/students/:studentId" element={<Student />} />
-            <Route path="courses/:courseId/assignments/:assignmentId" element={<Assignment />} />
-          </>
-        }
+        <Route path="/courses" element={
+          <PrivateRoute>
+            <Courses setCourseId={setCourseId} setCourseName={setCourseName} />
+          </PrivateRoute>
+        } />
+        <Route path="courses/:courseId/students" element={
+          <PrivateRoute>
+            <Course activeTab="students" />
+          </PrivateRoute>
+        } />
+        <Route path="courses/:courseId/assignments" element={
+          <PrivateRoute>
+            <Course activeTab="assignments" />
+          </PrivateRoute>
+        } />
+        <Route path="courses/:courseId/students/:studentId" element={
+          <PrivateRoute>
+            <Student />
+          </PrivateRoute>
+        } />
+        <Route path="courses/:courseId/assignments/:assignmentId" element={
+          <PrivateRoute>
+            <Assignment />
+          </PrivateRoute>
+        } />
       </Routes>
-      { !isUserLoggedIn && 
+      {!isUserLoggedIn && 
         <div>Welcome to this App</div>
       }
     </>
