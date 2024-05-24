@@ -71,7 +71,7 @@ export default function StudentTable() {
   return (
     <Box sx={{ minWidth: 500, mx: "auto"}}>
     <TableContainer sx={{ maxWidth: 650, mx: "auto" }}>
-      <Table aria-label="simple table">
+      <Table sx={{ '& .MuiTableRow-root': { borderBottom: '2px solid #FFF' } }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell sx={{ position: 'sticky', top: 0, color: 'white', bgcolor: 'text.secondary', zIndex: 100 }}>Student</TableCell>
