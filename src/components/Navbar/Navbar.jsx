@@ -16,6 +16,14 @@ export default function Navbar({ activeTab, onTabChange, courseName, courseId })
     setActiveTabState(activeTab);
   }, [activeTab]);
 
+  useEffect(() => {
+    if (location.pathname.includes('students')) {
+      setActiveTabState('students');
+    } else if (location.pathname.includes('assignments')) {
+      setActiveTabState('assignments');
+    }
+  }, [location.pathname]);
+
   const handleTabChange = (tab) => {
     setActiveTabState(tab);
     onTabChange(tab);
@@ -48,7 +56,10 @@ export default function Navbar({ activeTab, onTabChange, courseName, courseId })
       boxSizing='border-box'
       boxShadow={3}
       bgcolor="background.paper"
-      position="relative"
+      position="fixed"
+      top={0}
+      zIndex={1000}
+      height="60px"  // Fixed height
     >
       <Box display="flex" alignItems="center">
         <Button onClick={handleCourseClick} sx={{ padding: 0, minWidth: 0 }}>

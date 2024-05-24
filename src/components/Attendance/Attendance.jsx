@@ -722,7 +722,7 @@ function Attendance() {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 2, mb: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Container maxWidth="sm" sx={{ mt: 2, mb: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '430px' }}>
       <Box sx={{
         bgcolor: 'pink',
         width: '100%',
