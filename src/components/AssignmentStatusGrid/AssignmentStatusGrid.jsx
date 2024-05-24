@@ -135,7 +135,7 @@
 
 // export default AssignmentStatusGrid;
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -234,7 +234,7 @@ function AssignmentStatusGrid() {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <TableContainer component={Paper} sx={{ maxWidth: 650, mx: "auto", maxHeight: '70vh', overflowY: 'auto', mt: 4 }}>
+    <TableContainer component={Paper} sx={{ maxWidth: 650, mx: "auto" }}>
       <Table aria-label="assignment status" stickyHeader>
         <TableHead>
           <TableRow>
