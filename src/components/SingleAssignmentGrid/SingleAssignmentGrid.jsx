@@ -82,7 +82,6 @@ export default function SingleAssignmentGrid() {
       existingSubmission.is_complete = isComplete;
     } else {
       updatedSubmissions.push({
-        id: Math.floor(Math.random() * 1000000), // Use a better ID generation strategy in real scenarios
         student: studentId,
         is_complete: isComplete,
         assignment: Number(assignmentId) // Ensure assignment ID is a number
@@ -103,6 +102,9 @@ export default function SingleAssignmentGrid() {
     try {
       const response = await updateAssignmentDetails(courseId, assignmentId, updatedAssignmentData);
       console.log("Response from updateAssignmentDetails API:", response);
+
+      // Update local state with response to ensure it matches backend
+      setAssignmentData(response);
 
       // Verify that the response data includes the updated submissions
       if (response.submissions.length !== updatedAssignmentData.submissions.length) {
