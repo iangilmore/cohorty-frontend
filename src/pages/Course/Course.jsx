@@ -1,5 +1,5 @@
-import { useParams, useLocation } from 'react-router-dom';
-import { Typography, Box, Paper } from '@mui/material';
+import { useParams } from 'react-router-dom';
+import { Box, Paper } from '@mui/material';
 import StudentTable from '../../components/StudentsOverviewGrid/StudentsOverviewGrid.jsx';
 import AssignmentsGrid from '../../components/AssignmentsGrid/AssignmentsGrid.jsx';
 
@@ -23,8 +23,6 @@ const CustomTabPanel = ({ children, value, index, ...other }) => {
 
 const Course = ({ activeTab }) => {
   const { courseId } = useParams();
-  const location = useLocation();
-  const courseName = location.state?.courseName;
 
   const tabValue = activeTab === 'assignments' ? 0 : 1;
 
@@ -45,25 +43,16 @@ const Course = ({ activeTab }) => {
       }}
     >
       <Paper elevation={3} sx={{
-        width: '100%', // Full width to accommodate space
+        // width: '100%', // Full width to accommodate space
         maxWidth: 800, // Keeps the content width controlled
         bgcolor: 'background.paper',
-        p: 3,
+        p: 1,
         borderRadius: 2,
         boxShadow: 3,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
       }}>
-        <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
-          {courseName}
-        </Typography>
-        <Box sx={{ width: '100%', borderBottom: 1, borderColor: 'divider', mb: 2 }}>
-          {/* <Tabs value={tabValue} centered>
-            <Tab label="Assignments" />
-            <Tab label="Students" />
-          </Tabs> */}
-        </Box>
         <CustomTabPanel value={tabValue} index={0}>
           <AssignmentsGrid courseId={courseId} />
         </CustomTabPanel>
