@@ -8,7 +8,8 @@ import {
   TableRow,
   Checkbox,
   Typography,
-  Box
+  Box,
+  Pagination
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { getCourse } from '../../services/courses.js';
@@ -20,6 +21,8 @@ export default function SingleAssignmentGrid() {
   const [assignmentData, setAssignmentData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const [studentsPerPage] = useState(6);
 
   useEffect(() => {
     const fetchStudentsAndAssignments = async () => {
@@ -116,11 +119,15 @@ export default function SingleAssignmentGrid() {
     }
   };
 
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  }
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <Box sx={{ width: '100%', mt: 4, display: 'flex', justifyContent: 'center' }}>
+    <Box sx={{ width: '100%', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
       <Box sx={{ minWidth: 500, mx: "auto", bgcolor: 'background.paper', p: 4, boxShadow: 3, borderRadius: 2 }}>
         {assignmentData && (
           <>
@@ -137,8 +144,8 @@ export default function SingleAssignmentGrid() {
             <TableHead>
               <TableRow>
                 <TableCell sx={{ color: 'white', bgcolor: 'text.secondary' }}>Name</TableCell>
-                <TableCell sx={{ color: 'white', bgcolor: 'text.secondary' }}align="center">Submitted</TableCell>
-                <TableCell sx={{ color: 'white', bgcolor: 'text.secondary' }}align="center">Complete</TableCell>
+                <TableCell sx={{ color: 'white', bgcolor: 'text.secondary' }} align="center">Submitted</TableCell>
+                <TableCell sx={{ color: 'white', bgcolor: 'text.secondary' }} align="center">Complete</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -167,6 +174,13 @@ export default function SingleAssignmentGrid() {
             </TableBody>
           </Table>
         </TableContainer>
+        <Box display="flex" justifyContent="center" sx={{ mt: 2 }}>
+        <Pagination
+          count={Math.ceil(assignments.length / studentsPerPage)}
+          page={page}
+          onChange={handlePageChange}
+        />
+      </Box>
       </Box>
     </Box>
   );
