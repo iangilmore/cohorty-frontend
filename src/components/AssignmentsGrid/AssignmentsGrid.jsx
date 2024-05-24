@@ -276,11 +276,11 @@ export default function AssignmentsGrid() {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <Box component={Paper} sx={{ maxWidth: 650, mx: "auto" }}>
-<Box display="flex" justifyContent="center">
-      <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{ mb: 2 }}>
-        Add Assignment
-      </Button>
+    <Box component={Paper} sx={{ maxWidth: 650, mx: "auto", minHeight: '500px' }}>
+      <Box display="flex" justifyContent="center">
+        <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{ mb: 2 }}>
+          Add Assignment
+        </Button>
       </Box>
       <TableContainer component={Paper} sx={{ maxWidth: 650, mx: "auto", maxHeight: '70vh', overflowY: 'auto' }}>
         <Table aria-label="simple table" stickyHeader>
@@ -355,6 +355,7 @@ export default function AssignmentsGrid() {
     </Box>
   );
 }
+
 
 
 
