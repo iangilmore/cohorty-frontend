@@ -127,5 +127,3 @@ export default function StudentTable() {
     </Box>
   );
 }
-
-
