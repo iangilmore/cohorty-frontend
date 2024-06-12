@@ -724,7 +724,7 @@ function Attendance() {
   return (
     <Container maxWidth="sm" sx={{ mt: 2, mb: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '430px' }}>
       <Box sx={{
-        bgcolor: 'pink',
+        bgcolor: '#E5E4E2',
         width: '100%',
         p: 2,
         boxShadow: 3,

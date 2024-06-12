@@ -18,7 +18,7 @@ const CourseItem = ({ course, handleClick }) => {
         alignItems: 'center',
         justifyContent: 'center',
         cursor: 'pointer',
-        bgcolor: '#d4e8fc', // Light blue background color
+        bgcolor: '#E5E4E2', 
         color: '#1a1a1a',   // Dark text color
         padding: 2,         // Added padding
       }}

@@ -23,22 +23,22 @@ export default function Student() {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         display: 'flex',
-        justifyContent: 'center', // Centers children horizontally
-        alignItems: 'center' // Centers children vertically
+        justifyContent: 'center',
+        alignItems: 'center'
       }}
     >
       <Box
         sx={{
-          width: '90%',
+          // width: '90%',
           maxWidth: 800,
-          bgcolor: 'white', // Set the background color to white for better readability
-          p: 2, // Padding inside the box
-          boxShadow: 3, // Adds a shadow for depth, can be adjusted or removed as needed
-          borderRadius: '4px', // Optional: rounds the corners
+          bgcolor: 'white',
+          p: 4,
+          boxShadow: 3,
+          borderRadius: '4px',
           display: 'flex',
-          flexDirection: 'column', // Aligns children vertically
-          alignItems: 'center', // Centers children horizontally
-          minHeight: '60vh', // Ensures a minimum height for the box
+          flexDirection: 'column',
+          alignItems: 'center',
+          minHeight: '450px',
         }}
       >
         <Typography variant="h4" sx={{ textAlign: 'center', mb: 2 }}>
@@ -48,7 +48,8 @@ export default function Student() {
           <Tab label="Assignments" value="assignments" />
           <Tab label="Attendance" value="attendance" />
         </Tabs>
-        <Box sx={{ mt: 2, width: '100%', height: '100%' }}>
+        {/* <Box sx={{ mt: 2, width: '100%', height: '100%' }}> */}
+        <Box sx={{ mt: 2, minWidth: '500px', minHeight: "500px"}}>
           {selectedTab === 'assignments' && <AssignmentStatusGrid />}
           {selectedTab === 'attendance' && <Attendance />}
         </Box>
