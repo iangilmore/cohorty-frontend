@@ -28,7 +28,7 @@ export default function StudentTable() {
           const formattedStudents = studentsArray.map(student => ({
             id: student.id,
             name: student.name,
-            assignment_percentage: `${student.assignment_percentage}%`,
+            assignment_percentage: Math.round(student.assignment_percentage) + '%',
             absences: student.absences
           }));
           console.log('Formatted students:', formattedStudents);
@@ -127,4 +127,3 @@ export default function StudentTable() {
     </Box>
   );
 }
-
