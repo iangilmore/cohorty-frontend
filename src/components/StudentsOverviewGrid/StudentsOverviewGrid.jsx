@@ -29,7 +29,6 @@ export default function StudentTable() {
             id: student.id,
             name: student.name,
             assignment_percentage: Math.round(student.assignment_percentage) + '%',
-            assignment_percentage: Math.round(student.assignment_percentage) + '%',
             absences: student.absences
           }));
           console.log('Formatted students:', formattedStudents);
